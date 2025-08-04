@@ -47,17 +47,7 @@ public class HabitsController(ApplicationDbContext dbContext) : ControllerBase
         [FromServices] IValidator<CreateHabitDto> validator
     )
     {
-        ValidationResult validationResult = await validator.ValidateAsync(createHabitDto);
-        if (!validationResult.IsValid)
-        {
-            return Problem(
-                statusCode: StatusCodes.Status400BadRequest,
-                extensions: new Dictionary<string, object?>
-                {
-                    ["errors"] = validationResult.ToDictionary(),
-                }
-            );
-        }
+        await validator.ValidateAndThrowAsync(createHabitDto);
 
         Habit habit = createHabitDto.ToEntity();
 
