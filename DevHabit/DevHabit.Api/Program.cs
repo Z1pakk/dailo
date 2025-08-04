@@ -16,6 +16,7 @@ builder
         // Configure the API to return 406 Not Acceptable if the requested format(Accept header) is not supported
         options.ReturnHttpNotAcceptable = true;
     })
+    .AddNewtonsoftJson()
     .AddXmlSerializerFormatters();
 
 builder.Services.AddOpenApi();
