@@ -1,8 +1,8 @@
 using DevHabit.Api.Database;
 using DevHabit.Api.DTOs.Habits;
 using DevHabit.Api.Entities;
+using DevHabit.Api.Services.Sorting;
 using FluentValidation;
-using FluentValidation.Results;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,10 +14,47 @@ namespace DevHabit.Api.Controllers;
 public class HabitsController(ApplicationDbContext dbContext) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<HabitCollectionDto>> GetHabits()
+    public async Task<ActionResult<HabitCollectionDto>> GetHabits(
+        [FromQuery] HabitsQueryParameters queryParams,
+        [FromServices] SortMappingProvider sortMappingProvider
+    )
     {
-        List<HabitDto> habits = await dbContext
-            .Habits.Select(HabitQueries.ProjectToDto())
+        if (!sortMappingProvider.ValidateMappings<HabitDto, Habit>(queryParams.Sort))
+        {
+            return Problem(
+                detail: $"The sort parameter is invalid: {queryParams.Sort}",
+                statusCode: StatusCodes.Status400BadRequest
+            );
+        }
+
+        queryParams.SearchQuery ??= queryParams.SearchQuery?.Trim().ToLowerInvariant();
+
+        IQueryable<Habit> query = dbContext.Habits;
+
+        SortMapping[] sortMappings = sortMappingProvider.GetMappings<HabitDto, Habit>();
+
+        if (!string.IsNullOrEmpty(queryParams.SearchQuery))
+        {
+            query = query.Where(h =>
+                h.Name.ToLower().Contains(queryParams.SearchQuery)
+                || h.Description != null
+                    && h.Description.ToLower().Contains(queryParams.SearchQuery)
+            );
+        }
+
+        if (queryParams.Type is not null)
+        {
+            query = query.Where(h => h.Type == queryParams.Type);
+        }
+
+        if (queryParams.Status is not null)
+        {
+            query = query.Where(h => h.Status == queryParams.Status);
+        }
+
+        List<HabitDto> habits = await query
+            .ApplySort(queryParams.Sort, sortMappings)
+            .Select(HabitQueries.ProjectToDto())
             .ToListAsync();
 
         var response = new HabitCollectionDto { Data = habits };
