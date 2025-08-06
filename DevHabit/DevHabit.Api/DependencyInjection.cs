@@ -115,6 +115,9 @@ public static class DependencyInjection
         >(_ => HabitMappings.SortMapping);
         builder.Services.AddTransient<DataShapingService>();
 
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddTransient<LinkService>();
+
         return builder;
     }
 }
