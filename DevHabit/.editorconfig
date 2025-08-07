@@ -439,5 +439,6 @@ dotnet_diagnostic.S6605.severity = none
 # S6781: JWT secret keys should not be disclosed
 dotnet_diagnostic.S6781.severity = none
 
-[**/Migrations/*]
+[**/Migrations/**]
 dotnet_diagnostic.IDE0161.severity = none
+resharper_arrange_namespace_body_highlighting = none
