@@ -5,7 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevHabit.Api.Services;
 
-public sealed class GitHubAccessTokenService(ApplicationDbContext dbContext)
+public sealed class GitHubAccessTokenService(
+    ApplicationDbContext dbContext,
+    EncryptionService encryptionService
+)
 {
     public async Task StoreAsync(
         string userId,
@@ -15,9 +18,11 @@ public sealed class GitHubAccessTokenService(ApplicationDbContext dbContext)
     {
         GitHubAccessToken? existingToken = await GetAccessTokenAsync(userId, cancellationToken);
 
+        string encryptedToken = encryptionService.Encrypt(accessTokenDto.Token);
+
         if (existingToken is not null)
         {
-            existingToken.Token = accessTokenDto.Token;
+            existingToken.Token = encryptedToken;
             existingToken.ExpiresAtUtc = DateTime.UtcNow.AddDays(accessTokenDto.ExpiresInDays);
             dbContext.Update(existingToken);
         }
@@ -27,7 +32,7 @@ public sealed class GitHubAccessTokenService(ApplicationDbContext dbContext)
             {
                 Id = $"gh_{Guid.NewGuid().ToString()}",
                 UserId = userId,
-                Token = accessTokenDto.Token,
+                Token = encryptedToken,
                 ExpiresAtUtc = DateTime.UtcNow.AddDays(accessTokenDto.ExpiresInDays),
                 CreatedAtUtc = DateTime.UtcNow,
             };
@@ -44,7 +49,14 @@ public sealed class GitHubAccessTokenService(ApplicationDbContext dbContext)
     {
         GitHubAccessToken? accessToken = await GetAccessTokenAsync(userId, cancellationToken);
 
-        return accessToken?.Token;
+        if (accessToken is null)
+        {
+            return null;
+        }
+
+        string decryptedToken = encryptionService.Decrypt(accessToken.Token);
+
+        return decryptedToken;
     }
 
     public async Task RevokeAsync(string userId, CancellationToken cancellationToken = default)
