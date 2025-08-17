@@ -2,6 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevHabit.Api", "DevHabit.Api\DevHabit.Api.csproj", "{E30F4CBC-B9C1-47A6-843B-4F953D59CED3}"
 EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "DevHabit.ClientApp", "DevHabit.ClientApp\", "{0C04692B-AA5A-4524-A938-DA39C308D32A}"
+	ProjectSection(WebsiteProperties) = preProject
+		SlnRelativePath = "DevHabit.ClientApp\"
+	EndProjectSection
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F86CBAE4-0817-4D7E-A26E-011620FB08AC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{04B4A96C-825F-44E5-9924-3C873453D7E7}"
