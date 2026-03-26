@@ -1,0 +1,52 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="Dailo.Infrastructure/Dailo.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/api/">
+    <Project Path="Dailo.Api/Dailo.Api.csproj" />
+  </Folder>
+  <Folder Name="/src/aspire/">
+    <Project Path="Dailo.AppHost/Dailo.AppHost.csproj" />
+  </Folder>
+  <Folder Name="/src/docs/" />
+  <Folder Name="/src/docs/ADR/">
+    <File Path="docs/adr/000_template.md" />
+    <File Path="docs/adr/001_database.md" />
+    <File Path="docs/adr/002_architecture.md" />
+  </Folder>
+  <Folder Name="/src/modules/" />
+  <Folder Name="/src/modules/habit/">
+    <Project Path="Habit.Api/Habit.Api.csproj" />
+    <Project Path="Habit.Application/Habit.Application.csproj" />
+    <Project Path="Habit.DataTransfer/Habit.DataTransfer.csproj" />
+    <Project Path="Habit.Domain/Habit.Domain.csproj" />
+    <Project Path="Habit.Infrastructure/Habit.Infrastructure.csproj" />
+    <Project Path="Habit.Integrations/Habit.Integrations.csproj" />
+    <Project Path="Habit.UnitTests/Habit.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/src/modules/identity/">
+    <Project Path="Identity.Api/Identity.Api.csproj" />
+    <Project Path="Identity.Application/Identity.Application.csproj" />
+    <Project Path="Identity.Domain/Identity.Domain.csproj" />
+    <Project Path="Identity.Infrastructure/Identity.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/modules/tag/">
+    <Project Path="Tag.Api/Tag.Api.csproj" />
+    <Project Path="Tag.Application/Tag.Application.csproj" />
+    <Project Path="Tag.DataTransfer/Tag.DataTransfer.csproj" />
+    <Project Path="Tag.Domain/Tag.Domain.csproj" />
+    <Project Path="Tag.Infrastructure/Tag.Infrastructure.csproj" />
+    <Project Path="Tag.Integrations/Tag.Integrations.csproj" />
+    <Project Path="Tag.UnitTests/Tag.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/src/shared/">
+    <Project Path="SharedKernel/SharedKernel.csproj" />
+  </Folder>
+  <Folder Name="/src/tests/" />
+  <Project Path="docker-compose.dcproj" />
+</Solution>

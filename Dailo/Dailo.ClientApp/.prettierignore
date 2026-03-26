@@ -1,0 +1,12 @@
+# Ignore artifacts:
+build
+coverage
+*.log
+obj/
+dist/
+.vscode/
+.idea/
+.angular/
+docs/
+bin/
+

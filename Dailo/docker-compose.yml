@@ -1,0 +1,14 @@
+services:
+  dailo.postgres:
+    image: postgres:18.3
+    environment:
+      POSTGRES_DB: dailo
+      POSTGRES_USER: dailo
+      POSTGRES_PASSWORD: Dailo123!@
+    volumes:
+      - dailo_posgres_data:/var/lib/postgresql
+    ports:
+      - 5460:5432
+volumes:
+  dailo_posgres_data:
+    external: false
