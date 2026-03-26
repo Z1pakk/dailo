@@ -29,10 +29,10 @@ jobs:
         run: dotnet restore Dailo.sln
 
       - name: Build
-        run: dotnet build Dailo.sln --configuration Release --no-restore
+        run: dotnet build Dailo.slnx --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test Dailo.sln --configuration Release --no-restore --no-build
+        run: dotnet test Dailo.slnx --configuration Release --no-restore --no-build
 
       - name: Publish
-        run: dotnet publish Dailo.sln --configuration Release --no-restore --no-build
+        run: dotnet publish Dailo.slnx --configuration Release --no-restore --no-build
