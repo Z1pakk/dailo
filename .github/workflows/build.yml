@@ -7,7 +7,7 @@ on:
       - main
 
 env:
-  DOTNET_VERSION: "9.x"
+  DOTNET_VERSION: "10.x"
 
 jobs:
   build:
@@ -15,24 +15,24 @@ jobs:
 
     defaults:
       run:
-        working-directory: DevHabit
+        working-directory: Dailo
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Restore
-        run: dotnet restore DevHabit.sln
+        run: dotnet restore Dailo.sln
 
       - name: Build
-        run: dotnet build DevHabit.sln --configuration Release --no-restore
+        run: dotnet build Dailo.sln --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test DevHabit.sln --configuration Release --no-restore --no-build
+        run: dotnet test Dailo.sln --configuration Release --no-restore --no-build
 
       - name: Publish
-        run: dotnet publish DevHabit.sln --configuration Release --no-restore --no-build
+        run: dotnet publish Dailo.sln --configuration Release --no-restore --no-build
