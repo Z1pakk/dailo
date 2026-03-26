@@ -26,7 +26,7 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Restore
-        run: dotnet restore Dailo.sln
+        run: dotnet restore Dailo.slnx
 
       - name: Build
         run: dotnet build Dailo.slnx --configuration Release --no-restore
