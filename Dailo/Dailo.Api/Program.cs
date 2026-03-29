@@ -1,6 +1,7 @@
 using Dailo.Infrastructure.User;
 using Habit.Infrastructure;
 using Identity.Infrastructure;
+using Scalar.AspNetCore;
 using SharedKernel.Endpoint;
 using Tag.Infrastructure;
 
@@ -16,7 +17,22 @@ builder
 
 builder.Services.AddProblemDetails();
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddOpenApi();
+
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+    app.MapScalarApiReference(
+        "/scalar",
+        opt =>
+        {
+            opt.WithTitle("Dailo Requests Documentation");
+        }
+    );
+}
 
 app.UseHttpsRedirection();
 

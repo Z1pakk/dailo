@@ -1,5 +1,6 @@
 using Habit.Api;
 using Habit.Application;
+using Habit.Application.Features.CreateHabit;
 using Habit.Application.Persistence;
 using Habit.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +39,7 @@ public static class Setup
 
         services.AddMediator(opt =>
         {
-            opt.Assemblies = [HabitApplicationRoot.Assembly];
+            opt.Assemblies = [typeof(IHabitApplicationRoot).Assembly];
         });
 
         return services;

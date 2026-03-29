@@ -1,15 +1,15 @@
-using SharedKernel.CQRS;
+using Mediator;
 using SharedKernel.ResultPattern;
 
 namespace Habit.Application.Features.CreateHabit;
 
 public sealed record CreateHabitCommand(string Name, string Description)
-    : ICommand<Result<CreateHabitCommandResponse>> { }
+    : IRequest<Result<CreateHabitCommandResponse>> { }
 
 public sealed record CreateHabitCommandResponse(Guid Id);
 
-public sealed class CreateHabitCommandHandler()
-    : ICommandHandler<CreateHabitCommand, Result<CreateHabitCommandResponse>>
+public sealed class CreateHabitCommandHandler
+    : IRequestHandler<CreateHabitCommand, Result<CreateHabitCommandResponse>>
 {
     public async ValueTask<Result<CreateHabitCommandResponse>> Handle(
         CreateHabitCommand request,
