@@ -1,8 +1,12 @@
 namespace SharedKernel.Entity;
 
-public abstract class BaseEntity : IEntity, IEntityVersion, IAuditableEntity, ISoftDeletableEntity
+public abstract class BaseEntity<T>
+    : IEntity<T>,
+        IEntityVersion,
+        IAuditableEntity,
+        ISoftDeletableEntity
 {
-    public required Guid Id { get; set; }
+    public required T Id { get; set; }
 
     // Auditing
     public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;

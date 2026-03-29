@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using SharedKernel.Persistence.Conventions;
 using SharedKernel.Persistence.Interceptors;
 using SharedKernel.User;
+using StrictId.EFCore;
 
 namespace SharedKernel.Persistence;
 

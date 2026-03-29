@@ -1,8 +1,8 @@
-using SharedKernel.Entity;
+using StrictId;
 
 namespace Habit.Domain.Entities;
 
-public class HabitTag : BaseEntity
+public class HabitTag : BaseEntity<Id<HabitTag>>
 {
     public required Guid HabitId { get; set; }
 

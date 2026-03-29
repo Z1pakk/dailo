@@ -1,6 +1,8 @@
 namespace SharedKernel.Entity;
 
-public interface IEntity
+public interface IEntity : IEntity<Guid> { }
+
+public interface IEntity<T>
 {
-    Guid Id { get; set; }
+    T Id { get; set; }
 }

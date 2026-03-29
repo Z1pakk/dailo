@@ -2,4 +2,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SharedKernel\SharedKernel.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="StrictId" />
+  </ItemGroup>
 </Project>

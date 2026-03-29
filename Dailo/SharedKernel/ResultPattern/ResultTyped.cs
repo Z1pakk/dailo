@@ -1,0 +1,55 @@
+using Microsoft.AspNetCore.Http;
+
+namespace SharedKernel.ResultPattern;
+
+public class Result<T>
+{
+    public bool IsSuccess { get; }
+    public bool IsFailure => !IsSuccess;
+    public T? Value { get; }
+    public string? Error { get; }
+    public ResultType Type { get; }
+
+    protected Result(bool isSuccess, T? value, string? error, ResultType type)
+    {
+        IsSuccess = isSuccess;
+        Value = value;
+        Error = error;
+        Type = type;
+    }
+
+    public static Result<T> Success(T value) => new(true, value, null, ResultType.Success);
+
+    public static Result<T> NoContent() => new(true, default, null, ResultType.NoContent);
+
+    public static Result<T> NotFound(string? error = null) =>
+        new(false, default, error, ResultType.NotFound);
+
+    public static Result<T> BadRequest(string error) =>
+        new(false, default, error, ResultType.BadRequest);
+
+    public static Result<T> Unauthorized(string? error = null) =>
+        new(false, default, error, ResultType.Unauthorized);
+
+    public static Result<T> Forbidden(string? error = null) =>
+        new(false, default, error, ResultType.Forbidden);
+
+    public static Result<T> Failure(string error) => new(false, default, error, ResultType.Failure);
+
+    public IResult ToTypedHttpResult()
+    {
+        return Type switch
+        {
+            ResultType.Success => Value is null
+            || EqualityComparer<T>.Default.Equals(Value, default!)
+                ? TypedResults.NoContent()
+                : TypedResults.Ok(Value),
+            ResultType.NoContent => TypedResults.NoContent(),
+            ResultType.NotFound => TypedResults.NotFound(Error),
+            ResultType.BadRequest => TypedResults.BadRequest(Error),
+            ResultType.Unauthorized => TypedResults.Unauthorized(),
+            ResultType.Forbidden => TypedResults.Forbid(),
+            _ => TypedResults.Problem(Error),
+        };
+    }
+}

@@ -1,9 +1,12 @@
+using Habit.Api;
+using Habit.Application;
 using Habit.Application.Persistence;
 using Habit.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SharedKernel.Endpoint;
 
 namespace Habit.Infrastructure;
 
@@ -30,6 +33,13 @@ public static class Setup
                 )
                 .UseSnakeCaseNamingConvention()
         );
+
+        services.AddEndpoints(assemblies: HabitApiRoot.Assembly);
+
+        services.AddMediator(opt =>
+        {
+            opt.Assemblies = [HabitApplicationRoot.Assembly];
+        });
 
         return services;
     }

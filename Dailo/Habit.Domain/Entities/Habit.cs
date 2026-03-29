@@ -1,10 +1,10 @@
 using Habit.Domain.Enums;
 using Habit.Domain.ValueObjects;
-using SharedKernel.Entity;
+using StrictId;
 
 namespace Habit.Domain.Entities;
 
-public sealed class Habit : BaseEntity
+public sealed class Habit : BaseEntity<Id<Habit>>
 {
     public Guid UserId { get; set; }
 

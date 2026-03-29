@@ -1,8 +1,8 @@
-using SharedKernel.Entity;
+using StrictId;
 
 namespace Tag.Domain.Entities;
 
-public sealed class Tag : BaseEntity
+public sealed class Tag : BaseEntity<Id<Tag>>
 {
     public Guid UserId { get; set; }
 

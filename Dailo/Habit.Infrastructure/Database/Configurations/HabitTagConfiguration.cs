@@ -4,7 +4,7 @@ using SharedKernel.Persistence;
 
 namespace Habit.Infrastructure.Database.Configurations;
 
-internal sealed class HabitTagConfiguration : BaseEntityConfiguration<HabitTag>
+internal sealed class HabitTagConfiguration : BaseEntityTypedConfiguration<HabitTag>
 {
     protected override void ConfigureEntity(EntityTypeBuilder<HabitTag> builder)
     {

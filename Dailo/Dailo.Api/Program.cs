@@ -1,6 +1,7 @@
 using Dailo.Infrastructure.User;
 using Habit.Infrastructure;
 using Identity.Infrastructure;
+using SharedKernel.Endpoint;
 using Tag.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,5 +24,7 @@ app.UseExceptionHandler();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapEndpoints();
 
 await app.RunAsync();
