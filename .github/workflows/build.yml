@@ -47,7 +47,7 @@ jobs:
         run: dotnet test Dailo.slnx --configuration Release --no-restore --no-build
 
       - name: 'Qodana Scan'
-        uses: JetBrains/qodana-action@v2026.1
+        uses: jetBrains/qodana-action@v2025.3.2
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
         with:
