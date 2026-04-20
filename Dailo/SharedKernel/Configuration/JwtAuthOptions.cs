@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using SharedKernel.Options;
 
 namespace SharedKernel.Configuration;
 

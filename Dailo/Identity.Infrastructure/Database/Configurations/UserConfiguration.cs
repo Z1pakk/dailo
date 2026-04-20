@@ -14,5 +14,11 @@ internal sealed class UserConfiguration : BaseEntityConfiguration<User>
 
         builder.Property(u => u.FirstName).HasMaxLength(250).IsRequired();
         builder.Property(u => u.LastName).HasMaxLength(250).IsRequired();
+
+        builder
+            .HasMany(u => u.RefreshTokens)
+            .WithOne(rt => rt.User)
+            .HasForeignKey(rt => rt.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

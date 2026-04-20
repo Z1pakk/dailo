@@ -1,0 +1,47 @@
+.layout-sidebar {
+  border-right: var(--d-sidebar-border);
+  background: var(--d-sidebar-bg-color);
+  background-image: linear-gradient(135deg, var(--d-sidebar-bg-color), var(--d-sidebar-bg-color-alt));
+  z-index: 10;
+  margin-left: 0;
+  width: 17rem;
+  height: 100%;
+  border-radius: 0 1.5rem 1.5rem 0;
+  overflow: hidden;
+  box-shadow: 0 1px 2px #1212170d;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+  transition: margin .5s cubic-bezier(.32,.72,0,1), transform .5s cubic-bezier(.32,.72,0,1);
+
+  .sidebar-header {
+    .logo {
+      text-align: center;
+      display: flex;
+      outline: none 0;
+      padding: 1rem;
+      transition: background-color var(--transition-duration), box-shadow var(--transition-duration);
+    }
+  }
+
+  .sidebar-menu-container {
+    overflow: auto;
+    flex: 1 1 0;
+    padding: 1rem;
+  }
+}
+
+.layout-sidebar-dark {
+  --d-sidebar-bg-color: var(--p-surface-950);
+  --d-sidebar-bg-color-alt: var(--p-surface-950);
+  --d-sidebar-border: 1px solid var(--p-surface-700);
+  --d-app-name-color: var(--p-surface-0);
+  --d-menu-separator-border: 1px solid var(--p-surface-700);
+  --d-menuitem-root-text-color: var(--p-surface-500);
+  --d-menuitem-text-color: var(--p-surface-400);
+  --d-menuitem-hover-bg: rgba(255, 255, 255, .08);
+  --d-menuitem-active-bg: rgba(255, 255, 255, .08);
+  --d-menuitem-active-text-color: var(--p-surface-400);
+  --d-menuitem-active-route-text-color: var(--p-surface-0);
+  --d-menuitem-focus-shadow: 0 0 0 1px var(--p-primary-50);
+}

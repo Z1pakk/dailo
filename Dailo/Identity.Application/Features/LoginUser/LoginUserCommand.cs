@@ -5,6 +5,7 @@ using Identity.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using SharedKernel.CQRS;
 using SharedKernel.ResultPattern;
+using StrictId;
 
 namespace Identity.Application.Features.LoginUser;
 
@@ -31,8 +32,6 @@ public sealed class LoginUserCommandHandler(
             return Result<LoginUserCommandResponse>.Unauthorized("Invalid email or password");
         }
 
-        IEnumerable<string> roles = await userManager.GetRolesAsync(identityUser);
-
         var authResult = await signInManager.CheckPasswordSignInAsync(
             identityUser,
             request.Password,
@@ -43,18 +42,21 @@ public sealed class LoginUserCommandHandler(
             return Result<LoginUserCommandResponse>.Unauthorized("Invalid email or password");
         }
 
+        IEnumerable<string> roles = await userManager.GetRolesAsync(identityUser);
+
         var accessTokens = tokenProvider.Create(
             new TokenRequest(identityUser.Id, identityUser.Email!, roles)
         );
 
-        // var refreshToken = new RefreshToken
-        // {
-        //     UserId = identityUser.Id,
-        //     Token = accessTokens.RefreshToken,
-        //     ExpiresAtUtc = accessTokens.RefreshTokenExpiration,
-        // };
-        //
-        // identityDbContext.RefreshTokens.Add(refreshToken);
+        var refreshToken = new RefreshToken
+        {
+            Id = Id.NewId(),
+            UserId = identityUser.Id,
+            Token = accessTokens.RefreshToken,
+            ExpiresAtUtc = accessTokens.RefreshTokenExpiration.UtcDateTime,
+        };
+
+        identityDbContext.RefreshTokens.Add(refreshToken);
 
         await identityDbContext.SaveChangesAsync(cancellationToken);
 

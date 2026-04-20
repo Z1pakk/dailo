@@ -23,4 +23,6 @@ public class User
 
     // Concurrency check
     public Guid Version { get; set; }
+
+    public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = [];
 }

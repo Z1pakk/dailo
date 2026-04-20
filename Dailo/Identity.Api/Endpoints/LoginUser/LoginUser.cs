@@ -1,9 +1,12 @@
+using Identity.Api.CookieOptions;
 using Identity.Application.Features.LoginUser;
 using Identity.Application.Models;
 using Mediator;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using SharedKernel.Cookie;
 
 namespace Identity.Api.Endpoints.LoginUser;
 
@@ -18,19 +21,26 @@ internal static class LoginUser
                 async (
                     LoginUserCommand payload,
                     ISender sender,
+                    ICookieService cookieService,
+                    IWebHostEnvironment env,
                     CancellationToken cancellationToken
-                ) => await HandleAsync(payload, sender, cancellationToken)
+                ) => await HandleAsync(payload, sender, cookieService, env, cancellationToken)
             )
             .Produces<LoginUserResponse>()
             .ProducesProblem(StatusCodes.Status401Unauthorized)
             .AllowAnonymous()
             .WithTags(nameof(Identity))
-            .WithName("Login user");
+            .WithName("LoginUser")
+            .WithDescription(
+                "Login a user with email and password. Returns access and refresh tokens if successful."
+            );
     }
 
     private static async Task<IResult> HandleAsync(
         LoginUserCommand request,
         ISender sender,
+        ICookieService cookieService,
+        IWebHostEnvironment env,
         CancellationToken cancellationToken = default
     )
     {
@@ -41,6 +51,13 @@ internal static class LoginUser
         }
 
         var response = new LoginUserResponse(commandResult.Value!.AccessTokens);
+
+        cookieService.SetCookie(
+            RefreshTokenCookieOptions.CookieName,
+            response.AccessTokens.RefreshToken,
+            RefreshTokenCookieOptions.Create(env, response.AccessTokens.RefreshTokenExpiration)
+        );
+
         return TypedResults.Ok(response);
     }
 }

@@ -10,7 +10,8 @@
         "tags": [
           "Habit"
         ],
-        "operationId": "Create Basket",
+        "description": "Creates a new habit for the authenticated user.",
+        "operationId": "CreateHabit",
         "requestBody": {
           "content": {
             "application/json": {
@@ -33,6 +34,25 @@
             }
           }
         }
+      },
+      "get": {
+        "tags": [
+          "Habit"
+        ],
+        "description": "Get habits",
+        "operationId": "GetHabits",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetHabitsResponse"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/auth/login": {
@@ -40,7 +60,8 @@
         "tags": [
           "Identity"
         ],
-        "operationId": "Login user",
+        "description": "Login a user with email and password. Returns access and refresh tokens if successful.",
+        "operationId": "LoginUser",
         "requestBody": {
           "content": {
             "application/json": {
@@ -80,7 +101,8 @@
         "tags": [
           "Identity"
         ],
-        "operationId": "Register user",
+        "description": "Registers a new user with the provided email, password, first name, and last name. Returns access tokens upon successful registration.",
+        "operationId": "RegisterUser",
         "requestBody": {
           "content": {
             "application/json": {
@@ -98,6 +120,53 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RegisterUserResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/refresh": {
+      "post": {
+        "tags": [
+          "Identity"
+        ],
+        "description": "Refreshes the access token using a valid refresh token. Returns new access and refresh tokens if the provided refresh token is valid.",
+        "operationId": "Refresh",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "#/components/schemas/RefreshCommand"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -209,6 +278,50 @@
       "FrequencyType": {
         "type": "integer"
       },
+      "GetHabitsResponse": {
+        "required": [
+          "habits"
+        ],
+        "type": "object",
+        "properties": {
+          "habits": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HabitModel"
+            }
+          }
+        }
+      },
+      "HabitModel": {
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
       "HabitType": {
         "type": "integer"
       },
@@ -298,6 +411,28 @@
               "null",
               "string"
             ]
+          }
+        }
+      },
+      "RefreshCommand": {
+        "required": [
+          "refreshToken"
+        ],
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string"
+          }
+        }
+      },
+      "RefreshResponse": {
+        "required": [
+          "accessTokens"
+        ],
+        "type": "object",
+        "properties": {
+          "accessTokens": {
+            "$ref": "#/components/schemas/AccessTokenModel"
           }
         }
       },

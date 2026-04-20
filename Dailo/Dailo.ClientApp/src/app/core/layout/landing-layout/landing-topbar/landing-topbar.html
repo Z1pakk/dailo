@@ -1,0 +1,43 @@
+<nav class="landing-container fixed top-4 left-1/2 -translate-x-1/2 w-full z-1000">
+  <div class="py-4 pl-4 md:pl-7 pr-4 rounded-2xl border border-surface-200 bg-surface-0 transition-all">
+    <div class="flex items-center justify-between">
+      <div class="flex-1 flex">
+        <a routerLink="/">
+          <app-logo-widget />
+        </a>
+      </div>
+
+      <ul class="flex-none hidden md:flex items-center gap-2">
+
+      </ul>
+
+      @if ($isAuthenticated()) {
+        <div class="flex-1 md:flex items-center justify-end gap-4">
+          <a routerLink="/app"
+             pButton
+             class="flex items-center justify-center leading-normal font-medium py-2 border border-primary-600 text-surface-0 transition-all"
+          >
+            Go to App
+          </a>
+        </div>
+      } @else {
+        <div class="flex-1 md:flex items-center justify-end gap-4">
+          <a routerLink="/login"
+             pButton
+             severity="secondary"
+             class="flex items-center justify-center w-24 leading-normal font-medium py-2 border border-surface-200 text-surface-900 transition-all"
+          >
+            Login
+          </a>
+          <a routerLink="/register"
+             pButton
+             class="flex items-center justify-center w-24 leading-normal font-medium py-2 border border-primary-600 text-surface-0 transition-all"
+          >
+            Register
+          </a>
+        </div>
+      }
+
+    </div>
+  </div>
+</nav>

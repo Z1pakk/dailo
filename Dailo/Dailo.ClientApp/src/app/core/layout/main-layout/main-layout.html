@@ -1,6 +1,16 @@
-<div class="main-layout">
-  main layout
-  <!-- Your main layout navigation/header here -->
-  <router-outlet></router-outlet>
-  <!-- Your main layout footer here -->
+<div class="layout-wrapper">
+  <app-main-sidebar />
+
+  <div class="layout-content-wrapper">
+    <div class="layout-content-wrapper-inside">
+      <app-main-topbar />
+      <main class="layout-content">
+        <router-outlet/>
+      </main>
+      <footer>
+        <app-main-footer />
+      </footer>
+    </div>
+  </div>
+
 </div>

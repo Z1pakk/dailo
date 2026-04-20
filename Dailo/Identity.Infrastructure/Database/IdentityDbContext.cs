@@ -29,6 +29,8 @@ public sealed class IdentityDbContext(
 {
     public string Schema => IdentitySchema.Name;
 
+    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.HasDefaultSchema(Schema);

@@ -1,4 +1,6 @@
 using Dailo.Infrastructure.Auth;
+using Dailo.Infrastructure.Cookie;
+using Dailo.Infrastructure.Cors;
 using Dailo.Infrastructure.User;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +11,9 @@ public static class Setup
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
+        services.AddHttpContextAccessor();
+        services.AddCorsServices();
+
         services.AddAuthServices();
         services.AddProblemDetails(options =>
         {
@@ -26,7 +31,11 @@ public static class Setup
                 context.ProblemDetails.Extensions.TryAdd("traceId", activity?.Id);
             };
         });
+
         services.AddUserServices();
+
+        services.AddCookieServices();
+
         return services;
     }
 }

@@ -2,7 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace SharedKernel.Configuration;
+namespace SharedKernel.Options;
 
 public static class ConfigurationExtensions
 {

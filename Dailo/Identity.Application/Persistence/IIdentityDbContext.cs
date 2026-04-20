@@ -19,4 +19,6 @@ public interface IIdentityDbContext : IAppDbContextBase
     DbSet<RoleClaim> RoleClaims { get; }
 
     DbSet<UserToken> UserTokens { get; }
+
+    DbSet<RefreshToken> RefreshTokens { get; }
 }

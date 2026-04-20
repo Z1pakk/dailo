@@ -3,13 +3,8 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "DevHabit.ClientApp": {
+    "Dailu.ClientApp": {
       "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -25,9 +20,14 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              { "glob": "**/*", "input": "src/assets", "output": "assets" }
             ],
-            "styles": ["src/assets/styles.scss"]
+            "styles": [
+              "src/assets/tailwind.css",
+              "src/assets/utilities/utilities.css",
+              "src/assets/styles.scss"
+            ]
           },
           "configurations": {
             "production": {
@@ -48,19 +48,28 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          },
           "configurations": {
             "production": {
-              "buildTarget": "DevHabit.ClientApp:build:production"
+              "buildTarget": "Dailu.ClientApp:build:production"
             },
             "development": {
-              "buildTarget": "DevHabit.ClientApp:build:development"
+              "buildTarget": "Dailu.ClientApp:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -78,9 +87,14 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              { "glob": "**/*", "input": "src/assets", "output": "assets" }
             ],
-            "styles": ["src/assets/styles.scss"]
+            "styles": [
+              "src/assets/tailwind.css",
+              "src/assets/utilities/utilities.css",
+              "src/assets/styles.scss"
+            ]
           }
         }
       }
@@ -92,8 +106,8 @@
   "schematics": {
     "@schematics/angular:component": {
       "changeDetection": "OnPush",
-      "selector": "dailo",
-      "skipTests": true
+      "skipTests": true,
+      "style": "scss"
     },
     "@schematics/angular:directive": {
       "type": "directive",

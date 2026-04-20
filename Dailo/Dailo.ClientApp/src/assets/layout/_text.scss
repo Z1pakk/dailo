@@ -1,0 +1,14 @@
+.label-small {
+  text-align: center;
+  font-size: var(--text-base);
+  line-height: var(--tw-leading, var(--text-base--line-height));
+  --tw-font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium);
+  color: var(--p-surface-500);
+  font-family: InterDisplay, sans-serif;
+  font-feature-settings: "cv11", "cv10", "cv09", "cv07", "cv05", "cv04", "cv03", "cv02", "cv01";
+}
+
+.text-inherit {
+  color: inherit !important;
+}

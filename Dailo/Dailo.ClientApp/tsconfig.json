@@ -4,6 +4,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "strict": true,
+    "noUnusedLocals": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
@@ -18,7 +19,7 @@
     "baseUrl": "./",
     "paths": {
       "@environment": ["./src/environments/environment.ts"],
-      "@app/*": ["./src/app/app/*"],
+      "@main/*": ["./src/app/main/*"],
       "@shared/*": ["./src/app/shared/*"],
       "@core/*": ["./src/app/core/*"],
       "@layout/*": ["./src/app/core/layout/*"],
@@ -34,7 +35,7 @@
     "typeCheckHostBindings": true,
     "strictTemplates": true
   },
-  "files": [],
+  "include": ["src/**/*.ts"],
   "references": [
     {
       "path": "./tsconfig.app.json"

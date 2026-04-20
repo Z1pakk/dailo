@@ -1,0 +1,33 @@
+<div class="layout-topbar">
+  <div class="topbar-left">
+    <button tabindex="0" type="button" class="menu-button">
+      <i class="pi pi-chevron-left"></i>
+    </button>
+  </div>
+  <div class="topbar-right">
+    <ul class="topbar-menu">
+      <li class="right-sidebar-item">
+        <a class="right-sidebar-button">
+          <i class="pi pi-search"></i>
+        </a>
+      </li>
+      <li class="right-sidebar-item">
+        <a class="right-sidebar-button">
+          <i class="pi pi-bell"></i>
+        </a>
+      </li>
+      <li class="profile-item static sm:relative">
+        <a class="right-sidebar-button" (click)="profileMenu.toggle($event); ">
+          <i class="pi pi-user"></i>
+        </a>
+        <p-menu
+          #profileMenu
+          [model]="profileMenuItems"
+          [popup]="true"
+          appendTo="body"
+        />
+      </li>
+    </ul>
+  </div>
+</div>
+

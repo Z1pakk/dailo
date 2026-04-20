@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'dailo',
+  selector: 'app-habit-add',
   imports: [],
   templateUrl: './habit-add.html',
   styleUrl: './habit-add.scss',

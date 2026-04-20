@@ -1,0 +1,36 @@
+@theme inline {
+  --text-xs: var(--text-xs);
+  --text-xs--line-height: var(--text-xs--line-height);
+  --text-sm: var(--text-sm);
+  --text-sm--line-height: var(--text-sm--line-height);
+  --text-base: var(--text-base);
+  --text-base--line-height: var(--text-base--line-height);
+  --text-lg: var(--text-lg);
+  --text-lg--line-height: var(--text-lg--line-height);
+  --text-xl: var(--text-xl);
+  --text-xl--line-height: var(--text-xl--line-height);
+  --text-2xl: var(--text-2xl);
+  --text-2xl--line-height: var(--text-2xl--line-height);
+  --text-3xl: var(--text-3xl);
+  --text-3xl--line-height: var(--text-3xl--line-height);
+  --text-4xl: var(--text-4xl);
+  --text-4xl--line-height: var(--text-4xl--line-height);
+  --text-5xl: var(--text-5xl);
+  --text-5xl--line-height: var(--text-5xl--line-height);
+  --text-7xl: var(--text-7xl);
+  --text-7xl--line-height: var(--text-7xl--line-height);
+
+  --font-weight-normal: var(--font-weight-normal);
+  --font-weight-medium: var(--font-weight-medium);
+  --font-weight-semibold: var(--font-weight-semibold);
+  --font-weight-bold: var(--font-weight-bold);
+
+  --tracking-tight: var(--tracking-tight);
+  --tracking-wide: var(--tracking-wide);
+
+  --leading-tight: var(--leading-tight);
+  --leading-snug: var(--leading-snug);
+  --leading-normal: var(--leading-normal);
+  --leading-relaxed: var(--leading-relaxed);
+  --leading-loose: var(--leading-loose);
+}

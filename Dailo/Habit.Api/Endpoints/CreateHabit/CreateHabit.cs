@@ -26,7 +26,8 @@ internal static class CreateHabit
             .Produces<CreateHabitResponse>(StatusCodes.Status201Created)
             .RequireAuthorization()
             .WithTags(nameof(Habit))
-            .WithName("Create Basket");
+            .WithName("CreateHabit")
+            .WithDescription("Creates a new habit for the authenticated user.");
     }
 
     private static async Task<IResult> HandleAsync(

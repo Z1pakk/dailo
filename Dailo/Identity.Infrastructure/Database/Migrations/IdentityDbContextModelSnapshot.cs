@@ -23,6 +23,70 @@ namespace Identity.Infrastructure.Database.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Identity.Domain.Entities.RefreshToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at_utc");
+
+                    b.Property<Guid?>("CreatedByUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("created_by_user_id");
+
+                    b.Property<DateTime>("ExpiresAtUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expires_at_utc");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_deleted");
+
+                    b.Property<DateTime?>("LastModifiedAtUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_modified_at_utc");
+
+                    b.Property<Guid?>("LastModifiedByUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("last_modified_by_user_id");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)")
+                        .HasColumnName("token");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.Property<Guid>("Version")
+                        .IsConcurrencyToken()
+                        .HasColumnType("uuid")
+                        .HasColumnName("version");
+
+                    b.HasKey("Id")
+                        .HasName("pk_refresh_tokens");
+
+                    b.HasIndex("CreatedAtUtc")
+                        .HasDatabaseName("ix_refresh_tokens_created_at_utc");
+
+                    b.HasIndex("IsDeleted")
+                        .HasDatabaseName("ix_refresh_tokens_is_deleted")
+                        .HasFilter("\"is_deleted\" = false");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_refresh_tokens_user_id");
+
+                    b.ToTable("refresh_tokens", "identity");
+                });
+
             modelBuilder.Entity("Identity.Domain.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
@@ -431,6 +495,18 @@ namespace Identity.Infrastructure.Database.Migrations
                     b.ToTable("user_tokens", "identity");
                 });
 
+            modelBuilder.Entity("Identity.Domain.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("Identity.Domain.Entities.User", "User")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_refresh_tokens_asp_net_users_user_id");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Identity.Domain.Entities.RoleClaim", b =>
                 {
                     b.HasOne("Identity.Domain.Entities.Role", null)
@@ -486,6 +562,11 @@ namespace Identity.Infrastructure.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_user_tokens_users_user_id");
+                });
+
+            modelBuilder.Entity("Identity.Domain.Entities.User", b =>
+                {
+                    b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,1 +1,145 @@
-<p>register works!</p>
+<section class="min-h-screen flex items-center lg:items-start lg:py-20 justify-center animate-fadein animate-duration-300 animate-ease-in max-w-400 mx-auto">
+  <div class="flex w-full h-full justify-center gap-12">
+    <div class="flex flex-col py-20 lg:min-w-120">
+      <a routerLink="/"
+         class="flex items-center justify-center lg:justify-start mb-8"
+      >
+        <app-logo-widget />
+      </a>
+      <div class="flex flex-col justify-center grow">
+        <div class="max-w-md mx-auto w-full">
+          <h2 class="text-4xl font-medium text-center lg:text-left">Sign up</h2>
+          <p class="body-small mt-3.5 text-center lg:text-left">Let's get started</p>
+
+          <p-button
+            class="mt-8 inline-block w-full"
+            label="Sign up with Google"
+            severity="secondary"
+            variant="outlined"
+            icon="pi pi-google"
+            fluid
+          />
+
+          <p-button
+            class="mt-4 inline-block w-full"
+            label="Sign up with Facebook"
+            severity="secondary"
+            variant="outlined"
+            icon="pi pi-facebook"
+            fluid
+          />
+
+          <div class="flex items-center gap-3.5 my-7">
+            <span class="flex-1 h-px bg-surface-200 dark:bg-surface-800"></span>
+            <span class="body-small text-surface-400 dark:text-surface-600">or</span>
+            <span class="flex-1 h-px bg-surface-200 dark:bg-surface-800"></span>
+          </div>
+
+          <form [formGroup]="registerForm" novalidate (ngSubmit)="register()">
+            <input
+              [formControl]="registerForm.controls.email"
+              pInputText
+              class="w-full"
+              placeholder="Email"
+              (input)="emailInput($event)"
+            />
+
+            @if (registerForm.controls.email.invalid && registerForm.controls.email.touched) {
+              <small class="text-sm text-red-500 mt-1">
+                {{ registerForm.controls.email.getError('issue') }}
+              </small>
+            }
+
+            <div class="flex items-start gap-4 mt-4">
+              <div class="flex-1">
+                <input
+                  [formControl]="registerForm.controls.firstName"
+                  pInputText
+                  type="text"
+                  fluid
+                  placeholder="First name"
+                />
+                @if (registerForm.controls.firstName.invalid && registerForm.controls.firstName.touched) {
+                  <small class="text-sm text-red-500 mt-1">
+                    {{ registerForm.controls.firstName.getError('issue') }}
+                  </small>
+                }
+              </div>
+
+              <div class="flex-1">
+                <input
+                  [formControl]="registerForm.controls.lastName"
+                  pInputText
+                  type="text"
+                  fluid
+                  placeholder="Last name"
+                />
+                @if (registerForm.controls.lastName.invalid && registerForm.controls.lastName.touched) {
+                  <small class="text-sm text-red-500 mt-1">
+                    {{ registerForm.controls.lastName.getError('issue') }}
+                  </small>
+                }
+              </div>
+            </div>
+
+            <p-password
+              [formControl]="registerForm.controls.password"
+              type="password"
+              class="w-full mt-4"
+              fluid
+              placeholder="Password"
+              feedback
+              autocomplete="off"
+            />
+
+            @if (registerForm.controls.password.invalid && registerForm.controls.password.touched) {
+              <small class="text-sm text-red-500 mt-1">
+                {{ registerForm.controls.password.getError('issue') }}
+              </small>
+            }
+
+            <p-password
+              [formControl]="registerForm.controls.confirmPassword"
+              type="password"
+              class="w-full mt-4"
+              fluid
+              placeholder="Confirm Password"
+              [feedback]="false"
+              autocomplete="off"
+            />
+
+            @if (registerForm.controls.confirmPassword.invalid && registerForm.controls.confirmPassword.touched) {
+              <small class="text-sm text-red-500 mt-1">
+                {{ registerForm.controls.confirmPassword.getError('issue') }}
+              </small>
+            }
+
+            <div class="my-8 ">
+              <div class="flex items-center gap-2">
+                <p-checkbox [formControl]="registerForm.controls.isAcceptedPrivacyTerms" [binary]="true" inputId="isAcceptedPrivacyTerms"/>
+                <label for="isAcceptedPrivacyTerms" class="body-small"><b>I have read</b> the Terms and Conditions</label>
+              </div>
+
+              @if (registerForm.controls.isAcceptedPrivacyTerms.invalid && registerForm.controls.isAcceptedPrivacyTerms.touched) {
+                <small class="text-sm text-red-500 mt-1 block">
+                  {{ registerForm.controls.isAcceptedPrivacyTerms.getError('issue') }}
+                </small>
+              }
+            </div>
+
+            <p-button type="submit" fluid>
+              Submit
+            </p-button>
+          </form>
+
+          <div class="mt-8 body-small text-center lg:text-left">
+            <span>Already have an account?</span>
+            <a routerLink="/login" class="text-primary-500 hover:underline">
+              Login
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

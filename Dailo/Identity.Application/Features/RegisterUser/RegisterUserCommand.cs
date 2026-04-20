@@ -6,6 +6,7 @@ using Identity.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using SharedKernel.CQRS;
 using SharedKernel.ResultPattern;
+using StrictId;
 
 namespace Identity.Application.Features.RegisterUser;
 
@@ -37,22 +38,12 @@ public sealed class RegisterUserCommandHandler(
                 var createUserResult = await userManager.CreateAsync(user, request.Password);
                 if (!createUserResult.Succeeded)
                 {
-                    // var extensions = new Dictionary<string, object?>()
-                    // {
-                    //     ["errors"] = createUserResult.Errors.ToDictionary(e => e.Code, e => e.Description),
-                    // };
-
                     return Result<RegisterUserCommandResponse>.Failure("Unable to register user");
                 }
 
                 var addToRoleResult = await userManager.AddToRoleAsync(user, Roles.Member);
                 if (!addToRoleResult.Succeeded)
                 {
-                    // var extensions = new Dictionary<string, object?>()
-                    // {
-                    //     ["errors"] = addToRoleResult.Errors.ToDictionary(e => e.Code, e => e.Description),
-                    // };
-
                     return Result<RegisterUserCommandResponse>.Failure("Unable to register user");
                 }
 
@@ -60,15 +51,15 @@ public sealed class RegisterUserCommandHandler(
                     new TokenRequest(user.Id, request.Email, [Roles.Member])
                 );
 
-                // var refreshToken = new RefreshToken
-                // {
-                //     Id = Guid.CreateVersion7(),
-                //     UserId = identityUser.Id,
-                //     Token = accessTokens.RefreshToken,
-                //     ExpiresAtUtc = accessTokens.RefreshTokenExpiration,
-                // };
-                //
-                // identityDbContext.RefreshTokens.Add(refreshToken);
+                var refreshToken = new RefreshToken
+                {
+                    Id = Id.NewId(),
+                    UserId = user.Id,
+                    Token = accessTokens.RefreshToken,
+                    ExpiresAtUtc = accessTokens.RefreshTokenExpiration.UtcDateTime,
+                };
+
+                identityDbContext.RefreshTokens.Add(refreshToken);
 
                 var response = new RegisterUserCommandResponse(accessTokens);
                 return Result<RegisterUserCommandResponse>.Success(response);

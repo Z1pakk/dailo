@@ -1,4 +1,5 @@
 using Habit.Api.Endpoints.CreateHabit;
+using Habit.Api.Endpoints.GetHabits;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using SharedKernel.Endpoint;
@@ -12,5 +13,6 @@ public sealed class HabitGroup : IEndpointGroup
         var group = app.MapGroup("/habits");
 
         group.MapCreateHabitEndpoint();
+        group.MapGetHabitsEndpoint();
     }
 }

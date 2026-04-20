@@ -10,7 +10,7 @@ https://blog.stackademic.com/best-angular-folder-structure-for-large-teams-2025-
 The project follows a modular architecture structure, with the following key directories:
 
 - Non-business feature (/src/app/core folder)
-- Business feature (/src/app/features folder)
+- Business feature (/src/app/modules folder)
 - Shared feature (/src/app/shared folder)
 - Assets (/src/app/assets folder)
 
