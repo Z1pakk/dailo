@@ -1,1 +1,20 @@
-<p>habit-add works!</p>
+<form [formGroup]="addHabitForm" class="flex flex-col gap-4" novalidate>
+  <div class="flex flex-col gap-2">
+    <label for="name" class="block">Name</label>
+    <input [formControl]="addHabitForm.controls.name"
+           name="name"
+           type="text"
+           id="name"
+           pInputText
+           fluid />
+  </div>
+  <div class="flex flex-col gap-2">
+    <label for="description" class="block">Description</label>
+    <input [formControl]="addHabitForm.controls.description"
+           name="description"
+           type="text"
+           id="description"
+           pInputText
+           fluid />
+  </div>
+</form>

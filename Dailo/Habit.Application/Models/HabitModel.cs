@@ -8,7 +8,7 @@ public class HabitModel
 
     public string? Description { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAtUtc { get; set; }
 
-    public DateTime UpdatedAt { get; set; }
+    public DateTime? LastModifiedAtUtc { get; set; }
 }

@@ -6,7 +6,7 @@ namespace Habit.Application.Persistence;
 
 public interface IHabitDbContext : IAppDbContextBase
 {
-    DbSet<Domain.Entities.Habit> Habits { get; }
+    DbSet<HabitEntity> Habits { get; }
 
     DbSet<HabitTag> HabitTags { get; }
 }

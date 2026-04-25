@@ -1,10 +1,14 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Http;
 
 namespace SharedKernel.ResultPattern;
 
 public class Result<T>
 {
+    [MemberNotNullWhen(true, nameof(Value))]
     public bool IsSuccess { get; }
+
+    [MemberNotNullWhen(false, nameof(Value))]
     public bool IsFailure => !IsSuccess;
     public T? Value { get; }
     public string? Error { get; }

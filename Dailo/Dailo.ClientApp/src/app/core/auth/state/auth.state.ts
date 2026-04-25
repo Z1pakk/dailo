@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Action, State, StateContext } from '@ngxs/store';
-import { AuthLogin, AuthRefresh, AuthRegister } from '@auth/state/auth.actions';
+import { AuthLogin, AuthRefresh, AuthRegister } from '@auth/state/auth.action';
 import { AuthApi } from '@auth/auth.api';
 import { finalize, tap } from 'rxjs';
 import { LoginResponse } from '@auth/responses/login.response';

@@ -213,16 +213,19 @@
             "type": "string"
           },
           "description": {
-            "type": "string"
+            "type": [
+              "null",
+              "string"
+            ]
           },
           "type": {
             "$ref": "#/components/schemas/HabitType"
           },
           "frequency": {
-            "$ref": "#/components/schemas/Frequency"
+            "$ref": "#/components/schemas/FrequencyModel"
           },
           "target": {
-            "$ref": "#/components/schemas/Target"
+            "$ref": "#/components/schemas/TargetModel"
           },
           "endDate": {
             "type": [
@@ -237,7 +240,7 @@
                 "type": "null"
               },
               {
-                "$ref": "#/components/schemas/Milestone"
+                "$ref": "#/components/schemas/MilestoneModel"
               }
             ]
           }
@@ -255,7 +258,7 @@
           }
         }
       },
-      "Frequency": {
+      "FrequencyModel": {
         "required": [
           "type",
           "timesPerPeriod"
@@ -312,12 +315,15 @@
               "string"
             ]
           },
-          "createdAt": {
+          "createdAtUtc": {
             "type": "string",
             "format": "date-time"
           },
-          "updatedAt": {
-            "type": "string",
+          "lastModifiedAtUtc": {
+            "type": [
+              "null",
+              "string"
+            ],
             "format": "date-time"
           }
         }
@@ -351,7 +357,7 @@
           }
         }
       },
-      "Milestone": {
+      "MilestoneModel": {
         "required": [
           "target",
           "current"
@@ -470,7 +476,7 @@
           }
         }
       },
-      "Target": {
+      "TargetModel": {
         "required": [
           "value",
           "unit"

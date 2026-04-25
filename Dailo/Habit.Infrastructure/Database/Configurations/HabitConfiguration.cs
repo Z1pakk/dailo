@@ -1,13 +1,16 @@
+using Habit.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SharedKernel.Persistence;
 
 namespace Habit.Infrastructure.Database.Configurations;
 
-internal sealed class HabitConfiguration : BaseEntityTypedConfiguration<Domain.Entities.Habit>
+internal sealed class HabitConfiguration : BaseEntityTypedConfiguration<HabitEntity>
 {
-    protected override void ConfigureEntity(EntityTypeBuilder<Domain.Entities.Habit> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<HabitEntity> builder)
     {
+        builder.ToTable("habits");
+
         builder.Property(h => h.Name).HasMaxLength(100);
         builder.Property(h => h.Description).HasMaxLength(500);
         builder.Property(h => h.IsArchived).HasDefaultValue(false);

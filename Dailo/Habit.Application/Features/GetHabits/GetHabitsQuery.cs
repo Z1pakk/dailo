@@ -10,19 +10,22 @@ public sealed class GetHabitsQuery : IQuery<Result<GetHabitsQueryResponse>> { }
 
 public sealed record GetHabitsQueryResponse(IEnumerable<HabitModel> Habits);
 
-public sealed class GetHabitsQueryHandler(IHabitDbContext habitDbContext): IQueryHandler<GetHabitsQuery, Result<GetHabitsQueryResponse>>
+public sealed class GetHabitsQueryHandler(IHabitDbContext habitDbContext)
+    : IQueryHandler<GetHabitsQuery, Result<GetHabitsQueryResponse>>
 {
     public async ValueTask<Result<GetHabitsQueryResponse>> Handle(
         GetHabitsQuery request,
         CancellationToken cancellationToken
     )
     {
-        var habits = await habitDbContext.Habits
-            .Select(h => new HabitModel()
+        var habits = await habitDbContext
+            .Habits.Select(h => new HabitModel()
             {
                 Id = h.Id.ToGuid(),
                 Name = h.Name,
                 Description = h.Description,
+                CreatedAtUtc = h.CreatedAtUtc,
+                LastModifiedAtUtc = h.LastModifiedAtUtc,
             })
             .ToListAsync(cancellationToken);
 

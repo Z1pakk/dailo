@@ -12,19 +12,26 @@ import { providePrimeNG } from 'primeng/config';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { credentialsInterceptor } from '@main/interceptors/credentials.interceptor';
 import { authInterceptor } from '@auth/interceptors/auth.interceptor';
+import { jwtInterceptor } from '@auth/interceptors/jwt.interceptor';
 import { DefaultPreset } from './default-preset';
-import { AuthState } from '@auth/state/auth.state';
 import { provideInitialAuth } from '@auth/providers/provide-initial-auth.provider';
+import { states } from '@main/state';
+import { provideDefaultDataTimeFormat } from '@main/providers/date-time.provider';
+import { providePrimeNgServices } from '@main/providers/prime-ng-services.provider';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(
-      withInterceptors([credentialsInterceptor, authInterceptor]),
+      withInterceptors([
+        credentialsInterceptor,
+        jwtInterceptor,
+        authInterceptor,
+      ]),
     ),
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideStore([AuthState], {
+    provideStore(states, {
       developmentMode: !environment.isProduction,
     }),
     providePrimeNG({
@@ -40,5 +47,7 @@ export const appConfig: ApplicationConfig = {
       },
     }),
     provideInitialAuth(),
+    provideDefaultDataTimeFormat(),
+    providePrimeNgServices(),
   ],
 };

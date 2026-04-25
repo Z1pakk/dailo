@@ -1,22 +1,22 @@
+using Habit.Application.Models;
 using Habit.Application.Persistence;
+using Habit.Domain.Aggregates;
 using Habit.Domain.Enums;
-using Habit.Domain.ValueObjects;
 using SharedKernel.CQRS;
 using SharedKernel.ResultPattern;
 using SharedKernel.User;
-using StrictId;
 
 namespace Habit.Application.Features.CreateHabit;
 
 public sealed record CreateHabitCommand(
     string Name,
-    string Description,
+    string? Description,
     HabitType Type,
-    Frequency Frequency,
-    Target Target,
+    FrequencyModel Frequency,
+    TargetModel Target,
     DateOnly? EndDate,
-    Milestone? Milestone
-) : ICommand<Result<CreateHabitCommandResponse>> { }
+    MilestoneModel? Milestone
+) : ICommand<Result<CreateHabitCommandResponse>>;
 
 public sealed record CreateHabitCommandResponse(Guid Id);
 
@@ -30,27 +30,31 @@ public sealed class CreateHabitCommandHandler(
         CancellationToken cancellationToken
     )
     {
-        var newHabit = new Domain.Entities.Habit()
-        {
-            Id = Id.NewId(),
-            Name = request.Name,
-            Description = request.Description,
-            Type = request.Type,
-            Frequency = request.Frequency,
-            Target = request.Target,
-            Status = HabitStatus.Ongoing,
-            IsArchived = false,
-            EndDate = request.EndDate,
-            Milestone = request.Milestone,
-            UserId = currentUserService.UserId,
-        };
+        var habitResult = HabitAggregate.Create(
+            currentUserService.UserId,
+            request.Name,
+            request.Description,
+            request.Type,
+            request.Frequency.Type,
+            request.Frequency.TimesPerPeriod,
+            request.Target.Value,
+            request.Target.Unit,
+            request.EndDate,
+            request.Milestone?.Target,
+            request.Milestone?.Current
+        );
 
-        dbContext.Habits.Add(newHabit);
+        if (habitResult.IsFailure)
+        {
+            return Result<CreateHabitCommandResponse>.BadRequest(habitResult.Error!);
+        }
+
+        var entity = habitResult.Value.ToEntity();
+
+        dbContext.Habits.Add(entity);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return Result<CreateHabitCommandResponse>.Success(
-            new CreateHabitCommandResponse(newHabit.Id.ToGuid())
-        );
+        return Result<CreateHabitCommandResponse>.Success(new CreateHabitCommandResponse(entity.Id.ToGuid()));
     }
 }

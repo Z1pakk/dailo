@@ -15,7 +15,7 @@ import {
   LoginFormValue,
   LoginPasswordSchema,
 } from './types/login-form.type';
-import { AuthLogin } from '@auth/state/auth.actions';
+import { AuthLogin } from '@auth/state/auth.action';
 import { LoginRequest } from '@auth/requests/login.request';
 import { AuthRouterService } from '@auth/services/auth-router.service';
 import { markAllAsDirty } from '@shared/lib/form/mark-as-dirty';

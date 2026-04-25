@@ -43,6 +43,7 @@
     "karma-jasmine-html-reporter": "~2.2.0",
     "postcss": "^8.5.9",
     "prettier": "^3.8.2",
+    "prettier-plugin-angular": "^0.3.2",
     "tailwindcss": "^4.2.2",
     "typescript": "~5.9.3"
   }

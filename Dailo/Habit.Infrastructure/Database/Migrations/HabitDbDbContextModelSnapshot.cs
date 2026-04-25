@@ -23,7 +23,7 @@ namespace Habit.Infrastructure.Database.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Habit.Domain.Entities.Habit", b =>
+            modelBuilder.Entity("Habit.Domain.Entities.HabitEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -108,7 +108,7 @@ namespace Habit.Infrastructure.Database.Migrations
                     b.ToTable("habits", "habits");
                 });
 
-            modelBuilder.Entity("Habit.Domain.Entities.HabitTag", b =>
+            modelBuilder.Entity("Habit.Domain.Entities.HabitEntityTag", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -172,7 +172,7 @@ namespace Habit.Infrastructure.Database.Migrations
                     b.ToTable("habit_tags", "habits");
                 });
 
-            modelBuilder.Entity("Habit.Domain.Entities.Habit", b =>
+            modelBuilder.Entity("Habit.Domain.Entities.HabitEntity", b =>
                 {
                     b.OwnsOne("Habit.Domain.ValueObjects.Frequency", "Frequency", b1 =>
                         {

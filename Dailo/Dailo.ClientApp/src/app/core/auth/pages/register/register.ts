@@ -14,7 +14,7 @@ import {
   valibotCrossFieldValidator,
   valibotValidator,
 } from '@shared/lib/form/valibot.validator';
-import { AuthRegister } from '@auth/state/auth.actions';
+import { AuthRegister } from '@auth/state/auth.action';
 import { Store } from '@ngxs/store';
 import { AuthRouterService } from '@auth/services/auth-router.service';
 import {

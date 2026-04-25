@@ -9,6 +9,7 @@ export function valibotValidator(
     if (result.success) {
       return null;
     }
+
     return {
       issue: result.issues[0].message,
       issues: result.issues.map((issue) => issue.message),

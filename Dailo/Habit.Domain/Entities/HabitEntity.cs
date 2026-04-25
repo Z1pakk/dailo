@@ -4,7 +4,7 @@ using StrictId;
 
 namespace Habit.Domain.Entities;
 
-public sealed class Habit : BaseEntity<Id<Habit>>
+public sealed class HabitEntity : BaseEntity<Id<HabitEntity>>
 {
     public Guid UserId { get; set; }
 
@@ -21,6 +21,7 @@ public sealed class Habit : BaseEntity<Id<Habit>>
     public required HabitStatus Status { get; set; }
 
     public bool IsArchived { get; set; }
+
     public DateOnly? EndDate { get; set; }
 
     public Milestone? Milestone { get; set; }

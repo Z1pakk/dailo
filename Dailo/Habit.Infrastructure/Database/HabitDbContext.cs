@@ -14,7 +14,7 @@ public sealed class HabitDbDbContext(
 {
     public string Schema => HabitSchema.NAME;
 
-    public DbSet<Domain.Entities.Habit> Habits => Set<Domain.Entities.Habit>();
+    public DbSet<HabitEntity> Habits => Set<HabitEntity>();
 
     public DbSet<HabitTag> HabitTags => Set<HabitTag>();
 
