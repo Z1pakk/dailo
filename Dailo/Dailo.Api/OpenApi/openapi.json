@@ -279,7 +279,8 @@
           "frequency",
           "target",
           "endDate",
-          "milestone"
+          "milestone",
+          "tagIds"
         ],
         "type": "object",
         "properties": {
@@ -317,6 +318,13 @@
                 "$ref": "#/components/schemas/MilestoneModel"
               }
             ]
+          },
+          "tagIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         }
       },
@@ -416,7 +424,11 @@
       "HabitModel": {
         "required": [
           "id",
-          "name"
+          "name",
+          "type",
+          "frequency",
+          "target",
+          "status"
         ],
         "type": "object",
         "properties": {
@@ -433,11 +445,43 @@
               "string"
             ]
           },
+          "type": {
+            "$ref": "#/components/schemas/HabitType"
+          },
+          "frequency": {
+            "$ref": "#/components/schemas/FrequencyModel"
+          },
+          "target": {
+            "$ref": "#/components/schemas/TargetModel"
+          },
+          "status": {
+            "$ref": "#/components/schemas/HabitStatus"
+          },
+          "isArchived": {
+            "type": "boolean"
+          },
+          "endDate": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date"
+          },
+          "milestone": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/MilestoneModel"
+              }
+            ]
+          },
           "createdAtUtc": {
             "type": "string",
             "format": "date-time"
           },
-          "lastModifiedAtUtc": {
+          "lastCompletedAtUtc": {
             "type": [
               "null",
               "string"
@@ -445,6 +489,9 @@
             "format": "date-time"
           }
         }
+      },
+      "HabitStatus": {
+        "type": "integer"
       },
       "HabitType": {
         "type": "integer"

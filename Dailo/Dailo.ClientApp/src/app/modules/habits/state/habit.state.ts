@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Action, State, StateContext } from '@ngxs/store';
 import { HabitModel } from '@habits/models/habit.model';
-import { HabitGetHabits } from '@habits/state/habit.action';
+import { HabitCreateHabit, HabitGetHabits } from '@habits/state/habit.action';
 import { HabitApi } from '@habits/api/habit.api';
 import { finalize, tap } from 'rxjs';
 
@@ -39,5 +39,17 @@ export class HabitState {
       }),
       finalize(() => ctx.patchState({ isLoading: false })),
     );
+  }
+
+  @Action(HabitCreateHabit)
+  public createHabit(
+    ctx: StateContext<HabitStateModel>,
+    action: HabitCreateHabit,
+  ) {
+    ctx.patchState({ isLoading: true });
+
+    return this._api
+      .create(action.payload)
+      .pipe(finalize(() => ctx.patchState({ isLoading: false })));
   }
 }

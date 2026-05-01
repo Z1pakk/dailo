@@ -1,0 +1,50 @@
+<div
+  class="border border-(--surface-border) rounded-lg p-4 flex flex-col gap-2 shadow-sm hover:shadow-md cursor-pointer transition-shadow">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <p class="text-2xl font-semibold">{{ habit().name }}</p>
+      <span>{{ habit().description }}</span>
+    </div>
+    <div class="text-right flex gap-2 justify-end items-baseline">
+      @if (habit().endDate) {
+        <span>Ends: {{ habit().endDate | date: 'dd/MM/yyyy' }}</span>
+      }
+      @if (habit().milestone; as milestone) {
+        <span
+          class="bg-blue-100 text-blue-800 font-medium px-2.5 py-0.5 rounded">
+          Milestone: {{ milestone.current }} / {{ milestone.target }}
+        </span>
+      }
+      <div>
+        <p-menu #actionsMenu
+                [model]="actionsItems"
+                [popup]="true"
+                appendTo="body" />
+        <p-button (click)="actionsMenu.toggle($event); $event.stopPropagation()"
+                  severity="secondary"
+                  variant="text"
+                  size="small"
+                  icon="pi pi-ellipsis-v" />
+      </div>
+    </div>
+    <div>
+      <span class="text-surface-500 text-sm font-normal leading-tight">
+        {{ habit().frequency.timesPerPeriod }} x {{ frequencyTypesLabels[habit().frequency.type] }}
+      </span>
+      <span class="text-surface-500 text-sm font-normal leading-tight ml-2">
+        {{ habit().target.value }} {{ habit().target.unit }}
+      </span>
+    </div>
+    <div class="text-right">
+      <span class="text-surface-500 text-sm font-normal leading-tight">
+        Created: {{ habit().createdAtUtc | date }}
+      </span>
+      @if (habit().lastCompletedAtUtc) {
+        <br />
+        <span class="text-surface-500 text-sm font-normal leading-tight">
+          Last Completed: {{ habit().lastCompletedAtUtc | date }}
+        </span>
+      }
+    </div>
+  </div>
+</div>

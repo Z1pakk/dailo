@@ -3,6 +3,7 @@ using System;
 using Habit.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,15 +11,17 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Habit.Infrastructure.Database.Migrations
 {
-    [DbContext(typeof(HabitDbDbContext))]
-    partial class HabitDbDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(HabitDbContext))]
+    [Migration("20260501153551_Habit_AddRelationsToTagsAndIndexes")]
+    partial class Habit_AddRelationsToTagsAndIndexes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("habits")
-                .HasAnnotation("ProductVersion", "10.0.4")
+                .HasAnnotation("ProductVersion", "10.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -91,7 +94,6 @@ namespace Habit.Infrastructure.Database.Migrations
 
                     b.Property<Guid>("Version")
                         .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("uuid")
                         .HasColumnName("version");
 
@@ -105,10 +107,18 @@ namespace Habit.Infrastructure.Database.Migrations
                         .HasDatabaseName("ix_habits_is_deleted")
                         .HasFilter("\"is_deleted\" = false");
 
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_habits_user_id")
+                        .HasFilter("\"is_deleted\" = false");
+
+                    b.HasIndex("UserId", "Name")
+                        .HasDatabaseName("ix_habits_user_id_name")
+                        .HasFilter("\"is_deleted\" = false");
+
                     b.ToTable("habits", "habits");
                 });
 
-            modelBuilder.Entity("Habit.Domain.Entities.HabitEntityTag", b =>
+            modelBuilder.Entity("Habit.Domain.Entities.HabitTagEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -151,7 +161,6 @@ namespace Habit.Infrastructure.Database.Migrations
 
                     b.Property<Guid>("Version")
                         .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("uuid")
                         .HasColumnName("version");
 
@@ -176,7 +185,7 @@ namespace Habit.Infrastructure.Database.Migrations
                 {
                     b.OwnsOne("Habit.Domain.ValueObjects.Frequency", "Frequency", b1 =>
                         {
-                            b1.Property<Guid>("HabitId")
+                            b1.Property<Guid>("HabitEntityId")
                                 .HasColumnType("uuid")
                                 .HasColumnName("id");
 
@@ -188,18 +197,18 @@ namespace Habit.Infrastructure.Database.Migrations
                                 .HasColumnType("integer")
                                 .HasColumnName("frequency_type");
 
-                            b1.HasKey("HabitId");
+                            b1.HasKey("HabitEntityId");
 
                             b1.ToTable("habits", "habits");
 
                             b1.WithOwner()
-                                .HasForeignKey("HabitId")
+                                .HasForeignKey("HabitEntityId")
                                 .HasConstraintName("fk_habits_habits_id");
                         });
 
                     b.OwnsOne("Habit.Domain.ValueObjects.Milestone", "Milestone", b1 =>
                         {
-                            b1.Property<Guid>("HabitId")
+                            b1.Property<Guid>("HabitEntityId")
                                 .HasColumnType("uuid")
                                 .HasColumnName("id");
 
@@ -211,18 +220,18 @@ namespace Habit.Infrastructure.Database.Migrations
                                 .HasColumnType("integer")
                                 .HasColumnName("milestone_target");
 
-                            b1.HasKey("HabitId");
+                            b1.HasKey("HabitEntityId");
 
                             b1.ToTable("habits", "habits");
 
                             b1.WithOwner()
-                                .HasForeignKey("HabitId")
+                                .HasForeignKey("HabitEntityId")
                                 .HasConstraintName("fk_habits_habits_id");
                         });
 
                     b.OwnsOne("Habit.Domain.ValueObjects.Target", "Target", b1 =>
                         {
-                            b1.Property<Guid>("HabitId")
+                            b1.Property<Guid>("HabitEntityId")
                                 .HasColumnType("uuid")
                                 .HasColumnName("id");
 
@@ -236,12 +245,12 @@ namespace Habit.Infrastructure.Database.Migrations
                                 .HasColumnType("integer")
                                 .HasColumnName("target_value");
 
-                            b1.HasKey("HabitId");
+                            b1.HasKey("HabitEntityId");
 
                             b1.ToTable("habits", "habits");
 
                             b1.WithOwner()
-                                .HasForeignKey("HabitId")
+                                .HasForeignKey("HabitEntityId")
                                 .HasConstraintName("fk_habits_habits_id");
                         });
 
@@ -252,6 +261,23 @@ namespace Habit.Infrastructure.Database.Migrations
 
                     b.Navigation("Target")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Habit.Domain.Entities.HabitTagEntity", b =>
+                {
+                    b.HasOne("Habit.Domain.Entities.HabitEntity", "Habit")
+                        .WithMany("Tags")
+                        .HasForeignKey("HabitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_habit_tags_habits_habit_id");
+
+                    b.Navigation("Habit");
+                });
+
+            modelBuilder.Entity("Habit.Domain.Entities.HabitEntity", b =>
+                {
+                    b.Navigation("Tags");
                 });
 #pragma warning restore 612, 618
         }

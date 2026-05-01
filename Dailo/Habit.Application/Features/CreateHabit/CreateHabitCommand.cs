@@ -1,3 +1,4 @@
+using Habit.Application.IntegratedServices;
 using Habit.Application.Models;
 using Habit.Application.Persistence;
 using Habit.Domain.Aggregates;
@@ -5,6 +6,7 @@ using Habit.Domain.Enums;
 using SharedKernel.CQRS;
 using SharedKernel.ResultPattern;
 using SharedKernel.User;
+using StrictId;
 
 namespace Habit.Application.Features.CreateHabit;
 
@@ -15,14 +17,16 @@ public sealed record CreateHabitCommand(
     FrequencyModel Frequency,
     TargetModel Target,
     DateOnly? EndDate,
-    MilestoneModel? Milestone
+    MilestoneModel? Milestone,
+    IEnumerable<Guid> TagIds
 ) : ICommand<Result<CreateHabitCommandResponse>>;
 
 public sealed record CreateHabitCommandResponse(Guid Id);
 
 public sealed class CreateHabitCommandHandler(
     IHabitDbContext dbContext,
-    ICurrentUserService currentUserService
+    ICurrentUserService currentUserService,
+    ITagService tagService
 ) : ICommandHandler<CreateHabitCommand, Result<CreateHabitCommandResponse>>
 {
     public async ValueTask<Result<CreateHabitCommandResponse>> Handle(
@@ -30,6 +34,11 @@ public sealed class CreateHabitCommandHandler(
         CancellationToken cancellationToken
     )
     {
+        var requestedTagIds = request.TagIds.Select(id => new Id<TagModel>(id)).ToHashSet();
+
+        var tags = await tagService.GetByIdsAsync(requestedTagIds, cancellationToken);
+        var existingTagIds = tags.Keys.Select(k => k.ToId()).ToHashSet();
+
         var habitResult = HabitAggregate.Create(
             currentUserService.UserId,
             request.Name,
@@ -41,12 +50,14 @@ public sealed class CreateHabitCommandHandler(
             request.Target.Unit,
             request.EndDate,
             request.Milestone?.Target,
-            request.Milestone?.Current
+            request.Milestone?.Current,
+            requestedTagIds.Select(id => new Id(id.Value)).ToHashSet(),
+            existingTagIds
         );
 
         if (habitResult.IsFailure)
         {
-            return Result<CreateHabitCommandResponse>.BadRequest(habitResult.Error);
+            return habitResult.ToTargetResult<CreateHabitCommandResponse>();
         }
 
         var entity = habitResult.Value.ToEntity();

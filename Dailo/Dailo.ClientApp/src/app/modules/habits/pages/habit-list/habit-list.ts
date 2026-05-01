@@ -10,14 +10,14 @@ import { Store } from '@ngxs/store';
 import { HabitGetHabits } from '@habits/state/habit.action';
 import { HabitStateSelectors } from '@habits/state/habit.selector';
 import { Button } from 'primeng/button';
-import { DatePipe } from '@angular/common';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DialogService } from 'primeng/dynamicdialog';
 import { HabitAdd } from '@habits/pages/habit-add/habit-add';
 import { HabitAddModalFooter } from '@habits/pages/habit-add/habit-add-modal-footer';
+import { HabitListItem } from '@habits/pages/habit-list/ui/habit-list-item/habit-list-item';
 
 @Component({
   selector: 'dailo',
-  imports: [DataView, Button, DatePipe],
+  imports: [DataView, Button, HabitListItem],
   templateUrl: './habit-list.html',
   styleUrl: './habit-list.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,8 +25,6 @@ import { HabitAddModalFooter } from '@habits/pages/habit-add/habit-add-modal-foo
 export class HabitList implements OnInit {
   private readonly _store = inject(Store);
   private readonly _dialogService = inject(DialogService);
-
-  private _addNewHabitDialogRef: DynamicDialogRef<HabitAdd> | null = null;
 
   protected readonly $habits = this._store.selectSignal(
     HabitStateSelectors.getSlices.habits,
@@ -37,22 +35,17 @@ export class HabitList implements OnInit {
   }
 
   protected addHabit() {
-    this._addNewHabitDialogRef = this._dialogService.open(HabitAdd, {
+    this._dialogService.open(HabitAdd, {
       header: 'Create a new habit',
       width: '40rem',
       modal: true,
       closable: true,
-      dismissableMask: true,
+      dismissableMask: false,
+      keepInViewport: true,
       data: { $isFormValid: signal(false) },
       templates: {
         footer: HabitAddModalFooter,
       },
-    });
-
-    this._addNewHabitDialogRef?.onClose.subscribe((data) => {
-      if (data) {
-        this._store.dispatch(new HabitGetHabits());
-      }
     });
   }
 

@@ -8,6 +8,7 @@ using SharedKernel.Endpoint;
 using Tag.Api;
 using Tag.Application;
 using Tag.Application.Persistence;
+using Tag.DataTransfer;
 using Tag.Infrastructure.Database;
 
 namespace Tag.Infrastructure;
@@ -49,6 +50,8 @@ public static class Setup
         services.AddEndpoints(assemblies: TagApiRoot.Assembly);
 
         services.AddHandlerAssembly<ITagApplicationRoot>();
+
+        services.AddTagDataTransferServices();
 
         return services;
     }

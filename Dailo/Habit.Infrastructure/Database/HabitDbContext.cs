@@ -6,8 +6,8 @@ using SharedKernel.User;
 
 namespace Habit.Infrastructure.Database;
 
-public sealed class HabitDbDbContext(
-    DbContextOptions<HabitDbDbContext> options,
+public sealed class HabitDbContext(
+    DbContextOptions<HabitDbContext> options,
     ICurrentUserService? currentUserService = null,
     TimeProvider? timeProvider = null
 ) : AppDbContextBase(options, currentUserService, timeProvider), IHabitDbContext
@@ -16,7 +16,7 @@ public sealed class HabitDbDbContext(
 
     public DbSet<HabitEntity> Habits => Set<HabitEntity>();
 
-    public DbSet<HabitTag> HabitTags => Set<HabitTag>();
+    public DbSet<HabitTagEntity> HabitTags => Set<HabitTagEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

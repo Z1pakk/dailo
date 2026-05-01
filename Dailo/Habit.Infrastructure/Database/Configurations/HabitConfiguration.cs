@@ -1,4 +1,5 @@
 using Habit.Domain.Entities;
+using Humanizer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SharedKernel.Persistence;
@@ -25,5 +26,15 @@ internal sealed class HabitConfiguration : BaseEntityTypedConfiguration<HabitEnt
             }
         );
         builder.OwnsOne(h => h.Milestone);
+
+        builder
+            .HasMany(t => t.Tags)
+            .WithOne(t => t.Habit)
+            .HasForeignKey(b => b.HabitId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasIndex(h => new { h.UserId }).HasSoftDeleteFilter();
+
+        builder.HasIndex(h => new { h.UserId, h.Name }).HasSoftDeleteFilter();
     }
 }

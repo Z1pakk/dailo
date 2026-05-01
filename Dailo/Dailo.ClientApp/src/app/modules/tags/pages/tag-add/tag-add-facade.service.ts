@@ -11,9 +11,10 @@ import {
   TagNameSchema,
 } from './type/tag-add-form.type';
 import { Store } from '@ngxs/store';
-import { TagCreateTag, TagGetTags } from '../../state/tag.action';
+import { TagCreateTag, TagFetchTags } from '../../state/tag.action';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ProblemDetailsModel } from '@shared/lib/api/models/problem-details.model';
+import { applyServerErrors } from '@shared/lib/form/apply-server-errors';
+import { CreateTagRequestModel } from '../../models/requests/create-tag.request';
 
 @Injectable()
 export class TagAddFacadeService {
@@ -39,20 +40,19 @@ export class TagAddFacadeService {
   public createTag(): Observable<void> {
     const formValue: TagAddFormValue = this.addTagForm.getRawValue();
 
-    return this._store.dispatch(new TagCreateTag(formValue)).pipe(
+    const request = (<CreateTagRequestModel>{
+      name: formValue.name,
+      description: formValue.description,
+    }) satisfies CreateTagRequestModel;
+
+    return this._store.dispatch(new TagCreateTag(request)).pipe(
       tap({
         next: () => {
-          this._store.dispatch(new TagGetTags());
+          this._store.dispatch(new TagFetchTags());
         },
       }),
       catchError((error: HttpErrorResponse) => {
-        const problemDetails = error.error as ProblemDetailsModel;
-        if (problemDetails?.errors) {
-          Object.entries(problemDetails.errors).forEach(([field, messages]) => {
-            const controlName = field.charAt(0).toLowerCase() + field.slice(1);
-            this.addTagForm.get(controlName)?.setErrors({ serverError: messages[0] });
-          });
-        }
+        applyServerErrors(this.addTagForm, error);
         return EMPTY;
       }),
     );

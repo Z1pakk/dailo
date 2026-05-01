@@ -46,6 +46,16 @@ public class Result<T>
 
     public static Result<T> Failure(string error) => new(false, default, error, ResultType.Failure);
 
+    public Result<TTarget> ToTargetResult<TTarget>() =>
+        Type switch
+        {
+            ResultType.NotFound => Result<TTarget>.NotFound(Error),
+            ResultType.BadRequest => Result<TTarget>.BadRequest(Error),
+            ResultType.Unauthorized => Result<TTarget>.Unauthorized(Error),
+            ResultType.Forbidden => Result<TTarget>.Forbidden(Error),
+            _ => Result<TTarget>.Failure(Error),
+        };
+
     public IResult ToTypedHttpResult()
     {
         return Type switch

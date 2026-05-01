@@ -3,6 +3,7 @@ using Habit.Api;
 using Habit.Application;
 using Habit.Application.Persistence;
 using Habit.Infrastructure.Database;
+using Habit.Integrations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
@@ -23,7 +24,7 @@ public static class Setup
     {
         var connectionString = configuration.GetConnectionString(HabitDbConnectionString);
 
-        services.AddDbContext<IHabitDbContext, HabitDbDbContext>(opt =>
+        services.AddDbContext<IHabitDbContext, HabitDbContext>(opt =>
             opt.UseNpgsql(
                     connectionString,
                     b =>
@@ -52,6 +53,8 @@ public static class Setup
         services.AddEndpoints(assemblies: HabitApiRoot.Assembly);
 
         services.AddHandlerAssembly<IHabitApplicationRoot>();
+
+        services.AddHabitIntegrations();
 
         return services;
     }

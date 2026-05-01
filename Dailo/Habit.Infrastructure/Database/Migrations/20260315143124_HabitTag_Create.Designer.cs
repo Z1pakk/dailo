@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Habit.Infrastructure.Database.Migrations
 {
-    [DbContext(typeof(HabitDbDbContext))]
+    [DbContext(typeof(HabitDbContext))]
     [Migration("20260315143124_HabitTag_Create")]
     partial class HabitTag_Create
     {

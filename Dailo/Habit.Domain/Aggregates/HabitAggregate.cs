@@ -32,6 +32,8 @@ public sealed class HabitAggregate : Aggregate
 
     private DateTime? LastCompletedAtUtc { get; set; }
 
+    public IReadOnlyList<HabitTagEntity> Tags { get; private set; } = [];
+
     private HabitAggregate() { }
 
     public static Result<HabitAggregate> Create(
@@ -45,9 +47,21 @@ public sealed class HabitAggregate : Aggregate
         string targetUnit,
         DateOnly? endDate,
         int? milestoneTarget,
-        int? milestoneCurrent
+        int? milestoneCurrent,
+        IReadOnlySet<Id> tagIds,
+        IReadOnlySet<Id> existingTagIds
     )
     {
+        var tagIdList = tagIds.ToList();
+
+        var missingTagIds = tagIdList.Where(id => !existingTagIds.Contains(id)).ToList();
+        if (missingTagIds.Count > 0)
+        {
+            return Result<HabitAggregate>.NotFound(
+                $"Tags not found: {string.Join(", ", missingTagIds)}"
+            );
+        }
+
         var frequencyResult = Frequency.Create(frequencyType, timesPerPeriod);
         if (frequencyResult.IsFailure)
         {
@@ -72,10 +86,12 @@ public sealed class HabitAggregate : Aggregate
             milestone = milestoneResult.Value;
         }
 
+        var habitId = Id<HabitAggregate>.NewId();
+
         return Result<HabitAggregate>.Success(
             new HabitAggregate
             {
-                Id = Id<HabitAggregate>.NewId(),
+                Id = habitId,
                 UserId = userId,
                 Name = name,
                 Description = description,
@@ -86,6 +102,15 @@ public sealed class HabitAggregate : Aggregate
                 IsArchived = false,
                 EndDate = endDate,
                 Milestone = milestone,
+                Tags = tagIdList
+                    .Select(tagId => new HabitTagEntity
+                    {
+                        Id = Id<HabitTagEntity>.NewId(),
+                        HabitId = habitId.ToGuid(),
+                        TagId = tagId,
+                        UserId = userId,
+                    })
+                    .ToList(),
             }
         );
     }
@@ -122,5 +147,6 @@ public sealed class HabitAggregate : Aggregate
             EndDate = EndDate,
             Milestone = Milestone,
             LastCompletedAtUtc = LastCompletedAtUtc,
+            Tags = Tags.ToList(),
         };
 }

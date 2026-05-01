@@ -9,10 +9,11 @@ import { Button } from 'primeng/button';
 import { DataView } from 'primeng/dataview';
 import { Store } from '@ngxs/store';
 import { DialogService } from 'primeng/dynamicdialog';
-import { TagGetTags } from '../../state/tag.action';
+import { TagFetchTags } from '../../state/tag.action';
 import { TagStateSelectors } from '../../state/tag.selector';
 import { TagAdd } from '../tag-add/tag-add';
 import { TagAddModalFooter } from '../tag-add/tag-add-modal-footer';
+import { TagAddModelData } from '../tag-add/type/tag-add-modal.type';
 
 @Component({
   selector: 'app-tag-list',
@@ -30,17 +31,18 @@ export class TagList implements OnInit {
   );
 
   ngOnInit() {
-    this._store.dispatch(new TagGetTags());
+    this._store.dispatch(new TagFetchTags());
   }
 
   protected addTag() {
-    this._dialogService.open(TagAdd, {
+    this._dialogService.open<TagAdd, TagAddModelData>(TagAdd, {
       header: 'Create a new tag',
       width: '40rem',
       modal: true,
       closable: true,
-      dismissableMask: true,
-      data: { $isFormValid: signal(false) },
+      dismissableMask: false,
+      keepInViewport: true,
+      data: <TagAddModelData>{ $isFormValid: signal(false) },
       templates: {
         footer: TagAddModalFooter,
       },

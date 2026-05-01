@@ -5,9 +5,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace Habit.Infrastructure.Database;
 
-internal sealed class HabitDbContextDesignFactory : IDesignTimeDbContextFactory<HabitDbDbContext>
+internal sealed class HabitDbContextDesignFactory : IDesignTimeDbContextFactory<HabitDbContext>
 {
-    public HabitDbDbContext CreateDbContext(string[] args)
+    public HabitDbContext CreateDbContext(string[] args)
     {
         // Get the base path for the Infrastructure project
         var basePath = Directory.GetCurrentDirectory();
@@ -28,7 +28,7 @@ internal sealed class HabitDbContextDesignFactory : IDesignTimeDbContextFactory<
             );
         }
 
-        var optionsBuilder = new DbContextOptionsBuilder<HabitDbDbContext>();
+        var optionsBuilder = new DbContextOptionsBuilder<HabitDbContext>();
         optionsBuilder
             .UseNpgsql(
                 (string?)connectionString,
@@ -42,6 +42,6 @@ internal sealed class HabitDbContextDesignFactory : IDesignTimeDbContextFactory<
             .UseSnakeCaseNamingConvention();
 
         // Return context with null services for design-time only
-        return new HabitDbDbContext(optionsBuilder.Options);
+        return new HabitDbContext(optionsBuilder.Options);
     }
 }

@@ -2,12 +2,12 @@
 
 ```bash
 # Create migration
-dotnet ef migrations add InitialCreate --context HabitDbDbContext -o Database/Migrations
+dotnet ef migrations add InitialCreate --context HabitDbContext -o Database/Migrations
 
 
 # Update database
-dotnet ef database update Dailo.Api --context HabitDbDbContext
+dotnet ef database update --context HabitDbContext
 
 # Remove last migration
-dotnet ef migrations remove Dailo.Api --context HabitDbDbContext
+dotnet ef migrations remove --context HabitDbContext
 ```

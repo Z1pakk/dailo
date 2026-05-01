@@ -1,7 +1,21 @@
+import { FrequencyModel } from '@habits/models/frequency.model';
+import { TargetModel } from '@habits/models/target.model';
+import { HabitType } from '@habits/enums/habit-type.enum';
+import { HabitStatus } from '@habits/enums/habit-status.enum';
+import { MilestoneModel } from '@habits/models/milestone.model';
+
 export interface HabitModel {
   id: number;
   name: string;
   description?: string;
+  type: HabitType;
+  frequency: FrequencyModel;
+  target: TargetModel;
+  status: HabitStatus;
+  isArchived: boolean;
+  endDate?: Date;
+  milestone?: MilestoneModel;
+
   createdAtUtc: Date;
-  lastModifiedUtc: Date;
+  lastCompletedAtUtc: Date;
 }

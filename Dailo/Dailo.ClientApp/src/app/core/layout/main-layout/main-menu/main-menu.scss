@@ -18,10 +18,14 @@
       border-radius: var(--border-radius);
       transition: box-shadow var(--transition-duration);
       color: var(--d-menuitem-text-color);
-    }
 
-    a.active-route {
-      color: var(--d-menuitem-active-route-text-color) !important;
+      &:hover {
+        background: var(--d-menuitem-hover-bg) !important;
+      }
+
+      &.active-route {
+        color: var(--d-menuitem-active-route-text-color) !important;
+      }
     }
   }
 

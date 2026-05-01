@@ -5,5 +5,5 @@ namespace Habit.Infrastructure;
 
 internal static class AssemblyReference
 {
-    internal static Assembly Assembly => typeof(HabitDbDbContext).Assembly;
+    internal static Assembly Assembly => typeof(HabitDbContext).Assembly;
 }

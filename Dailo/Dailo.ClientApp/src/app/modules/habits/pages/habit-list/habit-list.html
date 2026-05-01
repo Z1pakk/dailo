@@ -7,29 +7,7 @@
     <ng-template #list let-habits>
       <div class="flex flex-col gap-4">
         @for (habit of habits; track habit.id) {
-          <div (click)="viewHabit(habit.id)"
-               class="border border-(--surface-border) rounded-lg p-4 flex flex-col gap-2 shadow-sm hover:shadow-md cursor-pointer transition-shadow">
-            <div>
-              <p class="text-2xl font-semibold">{{ habit.name }}</p>
-              <span>{{ habit.description }}</span>
-            </div>
-            <div class="flex justify-between">
-              <div></div>
-              <div>
-                <span
-                  class="text-surface-500 text-sm font-normal leading-tight">
-                  Created: {{ habit.createdAtUtc | date }}
-                </span>
-                @if (habit.lastModifiedAtUtc) {
-                  <br />
-                  <span
-                    class="text-surface-500 text-sm font-normal leading-tight">
-                    Updated: {{ habit.lastModifiedAtUtc | date }}
-                  </span>
-                }
-              </div>
-            </div>
-          </div>
+          <app-habit-list-item [habit]="habit" />
         }
       </div>
     </ng-template>

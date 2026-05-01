@@ -18,7 +18,7 @@ namespace Tag.Infrastructure.Database.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("tags")
-                .HasAnnotation("ProductVersion", "10.0.4")
+                .HasAnnotation("ProductVersion", "10.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -69,7 +69,6 @@ namespace Tag.Infrastructure.Database.Migrations
 
                     b.Property<Guid>("Version")
                         .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("uuid")
                         .HasColumnName("version");
 
@@ -81,6 +80,14 @@ namespace Tag.Infrastructure.Database.Migrations
 
                     b.HasIndex("IsDeleted")
                         .HasDatabaseName("ix_tags_is_deleted")
+                        .HasFilter("\"is_deleted\" = false");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_tags_user_id")
+                        .HasFilter("\"is_deleted\" = false");
+
+                    b.HasIndex("UserId", "Name")
+                        .HasDatabaseName("ix_tags_user_id_name")
                         .HasFilter("\"is_deleted\" = false");
 
                     b.ToTable("tags", "tags");

@@ -6,6 +6,8 @@ import {
 } from '@angular/core';
 import { Button } from 'primeng/button';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { TagAddModelData } from './type/tag-add-modal.type';
+import { TagAdd } from './tag-add';
 
 @Component({
   selector: 'app-tag-add-modal-footer',
@@ -22,16 +24,23 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TagAddModalFooter {
-  private readonly _dialogRef = inject(DynamicDialogRef);
-  private readonly _config = inject(DynamicDialogConfig);
+  private readonly _dialogRef = inject(DynamicDialogRef<TagAdd>);
+  private readonly _config = inject<DynamicDialogConfig<TagAddModelData>>(
+    DynamicDialogConfig<TagAddModelData>,
+  );
 
-  protected readonly $isFormValid: Signal<boolean> =
-    this._config.data.$isFormValid;
+  private get _data(): TagAddModelData {
+    return this._config.data!;
+  }
+
+  protected readonly $isFormValid: Signal<boolean> = this._data.$isFormValid;
 
   protected addNewTag() {
-    this._config.data.submit().subscribe({
-      next: () => this._dialogRef.close(true),
-    });
+    if (this._data.submit) {
+      this._data.submit().subscribe({
+        next: () => this._dialogRef.close(true),
+      });
+    }
   }
 
   protected close() {

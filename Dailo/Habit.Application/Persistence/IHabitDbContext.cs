@@ -8,5 +8,5 @@ public interface IHabitDbContext : IAppDbContextBase
 {
     DbSet<HabitEntity> Habits { get; }
 
-    DbSet<HabitTag> HabitTags { get; }
+    DbSet<HabitTagEntity> HabitTags { get; }
 }

@@ -1,3 +1,4 @@
+using Humanizer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SharedKernel.Persistence;
@@ -13,5 +14,9 @@ internal sealed class TagConfiguration : BaseEntityTypedConfiguration<TagEntity>
 
         builder.Property(t => t.Name).HasMaxLength(100);
         builder.Property(t => t.Description).HasMaxLength(2000);
+
+        builder.HasIndex(t => new { t.UserId }).HasSoftDeleteFilter();
+
+        builder.HasIndex(t => new { t.UserId, t.Name }).HasSoftDeleteFilter();
     }
 }

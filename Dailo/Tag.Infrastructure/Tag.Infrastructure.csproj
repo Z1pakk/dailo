@@ -20,6 +20,7 @@
     <ProjectReference Include="..\SharedKernel\SharedKernel.csproj" />
     <ProjectReference Include="..\Tag.Api\Tag.Api.csproj" />
     <ProjectReference Include="..\Tag.Application\Tag.Application.csproj" />
+    <ProjectReference Include="..\Tag.DataTransfer\Tag.DataTransfer.csproj" />
     <ProjectReference Include="..\Tag.Domain\Tag.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>

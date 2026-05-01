@@ -2,8 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { Action, State, StateContext } from '@ngxs/store';
 import { TagModel } from '../models/tag.model';
 import { TagApi } from '../api/tag.api';
-import { TagCreateTag, TagGetTags } from './tag.action';
-import { finalize, tap } from 'rxjs';
+import { TagFetchTags, TagCreateTag, TagGetTags } from './tag.action';
+import { finalize, Observable, of, tap } from 'rxjs';
 import { GetTagsResponseModel } from '../models/responses/get-tags.response';
 
 export interface TagStateModel {
@@ -26,6 +26,20 @@ export class TagState {
 
   @Action(TagGetTags)
   public getTags(ctx: StateContext<TagStateModel>, _: TagGetTags) {
+    const stateTags = ctx.getState();
+
+    if (stateTags.tags.length) {
+      return of(stateTags.tags);
+    }
+
+    return ctx.dispatch(new TagFetchTags());
+  }
+
+  @Action(TagFetchTags)
+  public fetchTags(
+    ctx: StateContext<TagStateModel>,
+    _: TagFetchTags,
+  ): Observable<GetTagsResponseModel> {
     ctx.patchState({
       isLoading: true,
     });
