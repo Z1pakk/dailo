@@ -13,7 +13,10 @@ import { Button } from 'primeng/button';
 import { DialogService } from 'primeng/dynamicdialog';
 import { HabitAdd } from '@habits/pages/habit-add/habit-add';
 import { HabitAddModalFooter } from '@habits/pages/habit-add/habit-add-modal-footer';
+import { HabitEdit } from '@habits/pages/habit-edit/habit-edit';
+import { HabitEditModalFooter } from '@habits/pages/habit-edit/habit-edit-modal-footer';
 import { HabitListItem } from '@habits/pages/habit-list/ui/habit-list-item/habit-list-item';
+import { HabitModel } from '@habits/models/habit.model';
 
 @Component({
   selector: 'dailo',
@@ -49,5 +52,18 @@ export class HabitList implements OnInit {
     });
   }
 
-  protected viewHabit(id: string) {}
+  protected editHabit(habit: HabitModel) {
+    this._dialogService.open(HabitEdit, {
+      header: 'Edit habit',
+      width: '40rem',
+      modal: true,
+      closable: true,
+      dismissableMask: false,
+      keepInViewport: true,
+      data: { habit, $isFormValid: signal(false) },
+      templates: {
+        footer: HabitEditModalFooter,
+      },
+    });
+  }
 }

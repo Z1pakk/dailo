@@ -1,13 +1,15 @@
 using Habit.Application.Features.CreateHabit;
+using Habit.Application.Models;
 using Mediator;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using SharedKernel.Endpoint;
+using StrictId;
 
 namespace Habit.Api.Endpoints.CreateHabit;
 
-internal sealed record CreateHabitResponse(Guid Id);
+internal sealed record CreateHabitResponse(Id<HabitModel> Id);
 
 internal static class CreateHabit
 {

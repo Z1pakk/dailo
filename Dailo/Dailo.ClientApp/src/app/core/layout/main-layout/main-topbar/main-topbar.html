@@ -1,7 +1,15 @@
 <div class="layout-topbar">
   <div class="topbar-left">
-    <button tabindex="0" type="button" class="menu-button">
-      <i class="pi pi-chevron-left"></i>
+    <button (click)="toggleMenu()"
+            tabindex="0"
+            type="button"
+            class="menu-button">
+      @if ($isMenuOpened()) {
+        <i class="pi pi-chevron-left"></i>
+      }
+      @else {
+        <i class="pi pi-chevron-right"></i>
+      }
     </button>
   </div>
   <div class="topbar-right">
@@ -17,15 +25,13 @@
         </a>
       </li>
       <li class="profile-item static sm:relative">
-        <a class="right-sidebar-button" (click)="profileMenu.toggle($event); ">
+        <a (click)="profileMenu.toggle($event);" class="right-sidebar-button">
           <i class="pi pi-user"></i>
         </a>
-        <p-menu
-          #profileMenu
-          [model]="profileMenuItems"
-          [popup]="true"
-          appendTo="body"
-        />
+        <p-menu #profileMenu
+                [model]="profileMenuItems"
+                [popup]="true"
+                appendTo="body" />
       </li>
     </ul>
   </div>

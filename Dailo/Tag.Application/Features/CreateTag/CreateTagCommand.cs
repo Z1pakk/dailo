@@ -1,6 +1,8 @@
 using SharedKernel.CQRS;
 using SharedKernel.ResultPattern;
 using SharedKernel.User;
+using StrictId;
+using Tag.Application.Models;
 using Tag.Application.Persistence;
 using Tag.Domain.Aggregates;
 
@@ -9,7 +11,7 @@ namespace Tag.Application.Features.CreateTag;
 public sealed record CreateTagCommand(string Name, string? Description)
     : ICommand<Result<CreateTagCommandResponse>>;
 
-public sealed record CreateTagCommandResponse(Guid Id);
+public sealed record CreateTagCommandResponse(Id<TagModel> Id);
 
 public sealed class CreateTagCommandHandler(
     ITagDbContext dbContext,

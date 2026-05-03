@@ -1,21 +1,24 @@
 import { computed, inject, Injectable, Signal } from '@angular/core';
 import { NonNullableFormBuilder } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import * as v from 'valibot';
 import {
   HabitAddForm,
   HabitAddFormGroup,
-  HabitDescriptionSchema,
-  HabitFrequencyTypeSchema,
+  HabitAddFormValue,
+} from '@habits/pages/habit-add/type/habit-add-form.type';
+import {
   HabitNameSchema,
-  HabitFrequencyTimesPerPeriodSchema,
+  HabitDescriptionSchema,
   HabitTypeSchema,
+  HabitFrequencyTypeSchema,
+  HabitFrequencyTimesPerPeriodSchema,
   HabitTargetValueSchema,
   HabitTargetUnitSchema,
   HabitMilestoneTargetSchema,
   HabitEndDateSchema,
-  HabitAddFormValue,
   HabitTagIdsSchema,
-} from '@habits/pages/habit-add/type/habit-add-form.type';
+} from '@habits/schemas/habit.schemas';
 import { valibotValidator } from '@shared/lib/form/valibot.validator';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, EMPTY, map, Observable, startWith, tap } from 'rxjs';
@@ -31,11 +34,13 @@ import { applyServerErrors } from '@shared/lib/form/apply-server-errors';
 import { CreateHabitRequestModel } from '@habits/models/requests/create-habit.request';
 import { TagStateSelectors } from '../../../tags/state/tag.selector';
 import { SelectItem } from '@shared/lib/select-item/select-item.type';
+import { toLocalDateString } from '@shared/lib/date/to-local-date-string';
 
 @Injectable()
 export class HabitAddFacadeService {
   private readonly _fb = inject(NonNullableFormBuilder);
   private readonly _store = inject(Store);
+  private readonly _messageService = inject(MessageService);
 
   private readonly _$tags = this._store.selectSignal(
     TagStateSelectors.getSlices.tags,
@@ -119,7 +124,7 @@ export class HabitAddFacadeService {
         timesPerPeriod: frequencyTimesPerPeriod,
       },
       target: { value: targetValue, unit: targetUnit },
-      endDate: endDate ? endDate.toISOString().split('T')[0] : null,
+      endDate: endDate ? toLocalDateString(endDate) : null,
       milestone:
         milestoneTarget !== null
           ? { target: milestoneTarget, current: 0 }
@@ -128,7 +133,17 @@ export class HabitAddFacadeService {
     }) satisfies CreateHabitRequestModel;
 
     return this._store.dispatch(new HabitCreateHabit(request)).pipe(
-      tap({ next: () => this._store.dispatch(new HabitGetHabits()) }),
+      tap({
+        next: () => {
+          this._store.dispatch(new HabitGetHabits());
+          this._messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Habit created successfully.',
+            life: 3000,
+          });
+        },
+      }),
       catchError((error: HttpErrorResponse) => {
         applyServerErrors(this.addHabitForm, error);
         return EMPTY;

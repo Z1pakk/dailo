@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/Solution Items/">
+    <File Path="../.github/workflows/build.yml" />
     <File Path=".editorconfig" />
     <File Path="AGENTS.md" />
     <File Path="Directory.Build.props" />
@@ -22,6 +23,12 @@
     <File Path="docs/adr/002_architecture.md" />
   </Folder>
   <Folder Name="/src/modules/" />
+  <Folder Name="/src/modules/habit-entry/">
+    <Project Path="HabitEntry.Api/HabitEntry.Api.csproj" />
+    <Project Path="HabitEntry.Application/HabitEntry.Application.csproj" />
+    <Project Path="HabitEntry.Domain/HabitEntry.Domain.csproj" />
+    <Project Path="HabitEntry.Infrastructure/HabitEntry.Infrastructure.csproj" />
+  </Folder>
   <Folder Name="/src/modules/habit/">
     <Project Path="Habit.Api/Habit.Api.csproj" />
     <Project Path="Habit.Application/Habit.Application.csproj" />

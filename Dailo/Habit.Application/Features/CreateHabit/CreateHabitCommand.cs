@@ -18,10 +18,10 @@ public sealed record CreateHabitCommand(
     TargetModel Target,
     DateOnly? EndDate,
     MilestoneModel? Milestone,
-    IEnumerable<Guid> TagIds
+    IEnumerable<Id<TagModel>> TagIds
 ) : ICommand<Result<CreateHabitCommandResponse>>;
 
-public sealed record CreateHabitCommandResponse(Guid Id);
+public sealed record CreateHabitCommandResponse(Id<HabitModel> Id);
 
 public sealed class CreateHabitCommandHandler(
     IHabitDbContext dbContext,
@@ -34,12 +34,13 @@ public sealed class CreateHabitCommandHandler(
         CancellationToken cancellationToken
     )
     {
-        var requestedTagIds = request.TagIds.Select(id => new Id<TagModel>(id)).ToHashSet();
+        var requestedTagIds = request.TagIds.ToHashSet();
 
         var tags = await tagService.GetByIdsAsync(requestedTagIds, cancellationToken);
         var existingTagIds = tags.Keys.Select(k => k.ToId()).ToHashSet();
 
         var habitResult = HabitAggregate.Create(
+            Id<HabitAggregate>.NewId(),
             currentUserService.UserId,
             request.Name,
             request.Description,
@@ -52,7 +53,8 @@ public sealed class CreateHabitCommandHandler(
             request.Milestone?.Target,
             request.Milestone?.Current,
             requestedTagIds.Select(id => new Id(id.Value)).ToHashSet(),
-            existingTagIds
+            existingTagIds,
+            lastCompletedAtUtc: null
         );
 
         if (habitResult.IsFailure)
@@ -67,7 +69,7 @@ public sealed class CreateHabitCommandHandler(
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return Result<CreateHabitCommandResponse>.Success(
-            new CreateHabitCommandResponse(entity.Id.ToGuid())
+            new CreateHabitCommandResponse(new Id<HabitModel>(entity.Id.Value))
         );
     }
 }

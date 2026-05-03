@@ -3,6 +3,7 @@ import { TargetModel } from '@habits/models/target.model';
 import { HabitType } from '@habits/enums/habit-type.enum';
 import { HabitStatus } from '@habits/enums/habit-status.enum';
 import { MilestoneModel } from '@habits/models/milestone.model';
+import { TagModel } from '../../tags/models/tag.model';
 
 export interface HabitModel {
   id: number;
@@ -15,6 +16,7 @@ export interface HabitModel {
   isArchived: boolean;
   endDate?: Date;
   milestone?: MilestoneModel;
+  tags: TagModel[];
 
   createdAtUtc: Date;
   lastCompletedAtUtc: Date;

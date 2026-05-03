@@ -18,7 +18,7 @@ import { frequencyTypeSelectItems } from '@habits/enums/frequency-type.enum';
 import { InputNumber } from 'primeng/inputnumber';
 import { DatePicker } from 'primeng/datepicker';
 import { Store } from '@ngxs/store';
-import { TagFetchTags } from '../../../tags/state/tag.action';
+import { TagGetTags } from '@tags/state/tag.action';
 
 @Component({
   selector: 'app-habit-add',
@@ -62,6 +62,6 @@ export class HabitAdd implements OnInit {
   }
 
   ngOnInit() {
-    this._store.dispatch(new TagFetchTags());
+    this._store.dispatch(new TagGetTags());
   }
 }

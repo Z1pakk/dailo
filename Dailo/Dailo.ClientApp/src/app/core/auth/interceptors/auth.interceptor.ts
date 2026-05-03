@@ -10,14 +10,14 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     return next(req);
   }
 
+  const store = inject(Store);
+  const router = inject(Router);
+
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       if (error.status !== 401) {
         return throwError(() => error);
       }
-
-      const store = inject(Store);
-      const router = inject(Router);
 
       return store.dispatch(new AuthRefresh()).pipe(
         switchMap(() => next(req)),

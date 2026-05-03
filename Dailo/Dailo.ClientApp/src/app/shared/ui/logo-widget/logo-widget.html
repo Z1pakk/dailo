@@ -1,9 +1,11 @@
 @let logoSrc = $isWhite() ? 'logo-white.svg' : 'logo-black.svg';
 <img
   [ngSrc]="`assets/images/${logoSrc}`"
-  width="125"
-  height="35"
+  [width]="$widthPx()"
+  [height]="$heightPx()"
   alt="Dailu logo"
-  class="h-10 w-auto"
+  [style.width.px]="$widthPx()"
+  [style.max-height.px]="$heightPx()"
+  class="w-auto"
   priority="priority"
 />

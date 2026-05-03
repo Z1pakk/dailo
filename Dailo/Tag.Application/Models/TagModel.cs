@@ -1,8 +1,10 @@
+using StrictId;
+
 namespace Tag.Application.Models;
 
 public sealed class TagModel
 {
-    public required Guid Id { get; set; }
+    public required Id<TagModel> Id { get; set; }
 
     public required string Name { get; set; }
 

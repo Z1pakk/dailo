@@ -1,10 +1,11 @@
 using Habit.Domain.Enums;
+using StrictId;
 
 namespace Habit.Application.Models;
 
 public class HabitModel
 {
-    public required Guid Id { get; set; }
+    public required Id<HabitModel> Id { get; set; }
 
     public required string Name { get; set; }
 
@@ -27,4 +28,6 @@ public class HabitModel
     public DateTime CreatedAtUtc { get; set; }
 
     public DateTime? LastCompletedAtUtc { get; set; }
+
+    public IEnumerable<TagModel> Tags { get; set; }
 }

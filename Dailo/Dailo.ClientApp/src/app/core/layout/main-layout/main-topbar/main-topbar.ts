@@ -1,8 +1,14 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import { Menu } from 'primeng/menu';
 import { MenuItem, MenuItemCommandEvent } from 'primeng/api';
 import { Store } from '@ngxs/store';
 import { AuthLogout } from '@auth/state/auth.action';
+import { MainSidebarService } from '@layout/service/main-sidebar.service';
 
 @Component({
   selector: 'app-main-topbar',
@@ -13,6 +19,9 @@ import { AuthLogout } from '@auth/state/auth.action';
 })
 export class MainTopbar {
   private readonly _store = inject(Store);
+  private readonly _mainSidebarService = inject(MainSidebarService);
+
+  protected readonly $isMenuOpened = computed(() => this._mainSidebarService.$isMenuOpened());
 
   protected readonly profileMenuItems: MenuItem[] = [
     {
@@ -31,4 +40,8 @@ export class MainTopbar {
       },
     },
   ];
+
+  protected toggleMenu() {
+    this._mainSidebarService.toggleMenu();
+  }
 }

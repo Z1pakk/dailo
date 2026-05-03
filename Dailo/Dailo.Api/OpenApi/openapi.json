@@ -55,6 +55,40 @@
         }
       }
     },
+    "/api/habits/{id}": {
+      "put": {
+        "tags": [
+          "Habit"
+        ],
+        "description": "Updates an existing habit for the current authenticated user.",
+        "operationId": "UpdateHabit",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateHabitCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
     "/api/tags": {
       "post": {
         "tags": [
@@ -320,11 +354,7 @@
             ]
           },
           "tagIds": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "type": "array"
           }
         }
       },
@@ -335,8 +365,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "format": "uuid"
+            "$ref": "#/components/schemas/IdOfHabitModel"
           }
         }
       },
@@ -365,8 +394,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "format": "uuid"
+            "$ref": "#/components/schemas/IdOfTagModel"
           }
         }
       },
@@ -433,8 +461,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "format": "uuid"
+            "$ref": "#/components/schemas/IdOfHabitModel"
           },
           "name": {
             "type": "string"
@@ -487,6 +514,12 @@
               "string"
             ],
             "format": "date-time"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TagModel"
+            }
           }
         }
       },
@@ -496,6 +529,8 @@
       "HabitType": {
         "type": "integer"
       },
+      "IdOfHabitModel": { },
+      "IdOfTagModel": { },
       "LoginUserCommand": {
         "required": [
           "email",
@@ -644,13 +679,13 @@
       "TagModel": {
         "required": [
           "id",
-          "name"
+          "name",
+          "description"
         ],
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "format": "uuid"
+            "$ref": "#/components/schemas/IdOfTagModel"
           },
           "name": {
             "type": "string"
@@ -660,17 +695,6 @@
               "null",
               "string"
             ]
-          },
-          "createdAtUtc": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "lastModifiedAtUtc": {
-            "type": [
-              "null",
-              "string"
-            ],
-            "format": "date-time"
           }
         }
       },
@@ -691,6 +715,63 @@
           },
           "unit": {
             "type": "string"
+          }
+        }
+      },
+      "UpdateHabitCommand": {
+        "required": [
+          "habitId",
+          "name",
+          "description",
+          "type",
+          "frequency",
+          "target",
+          "endDate",
+          "milestone",
+          "tagIds"
+        ],
+        "type": "object",
+        "properties": {
+          "habitId": {
+            "$ref": "#/components/schemas/IdOfHabitModel"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "type": {
+            "$ref": "#/components/schemas/HabitType"
+          },
+          "frequency": {
+            "$ref": "#/components/schemas/FrequencyModel"
+          },
+          "target": {
+            "$ref": "#/components/schemas/TargetModel"
+          },
+          "endDate": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date"
+          },
+          "milestone": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/MilestoneModel"
+              }
+            ]
+          },
+          "tagIds": {
+            "type": "array"
           }
         }
       }

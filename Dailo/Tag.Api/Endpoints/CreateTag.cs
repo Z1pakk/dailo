@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using SharedKernel.Endpoint;
+using StrictId;
 using Tag.Application.Features.CreateTag;
+using Tag.Application.Models;
 
 namespace Tag.Api.Endpoints;
 
-internal sealed record CreateTagResponse(Guid Id);
+internal sealed record CreateTagResponse(Id<TagModel> Id);
 
 internal static class CreateTag
 {

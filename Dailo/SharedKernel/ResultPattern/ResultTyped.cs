@@ -56,6 +56,16 @@ public class Result<T>
             _ => Result<TTarget>.Failure(Error),
         };
 
+    public Result ToPlainResult() =>
+        Type switch
+        {
+            ResultType.NotFound => Result.NotFound(Error),
+            ResultType.BadRequest => Result.BadRequest(Error),
+            ResultType.Unauthorized => Result.Unauthorized(Error),
+            ResultType.Forbidden => Result.Forbidden(Error),
+            _ => Result.Failure(Error),
+        };
+
     public IResult ToTypedHttpResult()
     {
         return Type switch

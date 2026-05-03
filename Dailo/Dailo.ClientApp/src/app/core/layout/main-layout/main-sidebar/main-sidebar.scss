@@ -1,3 +1,9 @@
+:host-context(.layout-menu-inactive) {
+  .layout-sidebar {
+    margin-left: -17rem;
+  }
+}
+
 .layout-sidebar {
   border-right: var(--d-sidebar-border);
   background: var(--d-sidebar-bg-color);

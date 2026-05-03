@@ -26,6 +26,8 @@ public sealed class HabitEntity : BaseEntity<Id<HabitEntity>>
 
     public Milestone? Milestone { get; set; }
 
+    public AutomationSource? AutomationSource { get; set; }
+
     public DateTime? LastCompletedAtUtc { get; set; }
 
     public ICollection<HabitTagEntity> Tags { get; set; } = [];

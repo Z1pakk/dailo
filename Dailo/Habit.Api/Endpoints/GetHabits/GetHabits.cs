@@ -1,5 +1,3 @@
-using Habit.Api.Endpoints.CreateHabit;
-using Habit.Application.Features.CreateHabit;
 using Habit.Application.Features.GetHabits;
 using Habit.Application.Models;
 using Mediator;

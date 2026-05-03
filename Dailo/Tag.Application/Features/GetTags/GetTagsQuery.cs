@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using SharedKernel.CQRS;
 using SharedKernel.ResultPattern;
 using SharedKernel.User;
+using StrictId;
 using Tag.Application.Models;
 using Tag.Application.Persistence;
 
@@ -25,7 +26,7 @@ public sealed class GetTagsQueryHandler(
             .Tags.Where(t => t.UserId == currentUserService.UserId)
             .Select(t => new TagModel
             {
-                Id = t.Id.ToGuid(),
+                Id = new Id<TagModel>(t.Id.Value),
                 Name = t.Name,
                 Description = t.Description,
                 CreatedAtUtc = t.CreatedAtUtc,

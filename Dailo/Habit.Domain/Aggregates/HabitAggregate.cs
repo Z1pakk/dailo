@@ -30,13 +30,14 @@ public sealed class HabitAggregate : Aggregate
 
     private Milestone? Milestone { get; set; }
 
-    private DateTime? LastCompletedAtUtc { get; set; }
+    private DateTime? LastCompletedAtUtc { get; init; }
 
     public IReadOnlyList<HabitTagEntity> Tags { get; private set; } = [];
 
     private HabitAggregate() { }
 
     public static Result<HabitAggregate> Create(
+        Id<HabitAggregate> id,
         Guid userId,
         string name,
         string? description,
@@ -49,12 +50,18 @@ public sealed class HabitAggregate : Aggregate
         int? milestoneTarget,
         int? milestoneCurrent,
         IReadOnlySet<Id> tagIds,
-        IReadOnlySet<Id> existingTagIds
+        IReadOnlySet<Id> existingTagIds,
+        DateTime? lastCompletedAtUtc
     )
     {
         var tagIdList = tagIds.ToList();
 
-        var missingTagIds = tagIdList.Where(id => !existingTagIds.Contains(id)).ToList();
+        if (tagIdList.Count > 20)
+        {
+            return Result<HabitAggregate>.BadRequest("A habit cannot have more than 20 tags.");
+        }
+
+        var missingTagIds = tagIdList.Where(tagId => !existingTagIds.Contains(tagId)).ToList();
         if (missingTagIds.Count > 0)
         {
             return Result<HabitAggregate>.NotFound(
@@ -65,13 +72,13 @@ public sealed class HabitAggregate : Aggregate
         var frequencyResult = Frequency.Create(frequencyType, timesPerPeriod);
         if (frequencyResult.IsFailure)
         {
-            return Result<HabitAggregate>.BadRequest(frequencyResult.Error!);
+            return Result<HabitAggregate>.BadRequest(frequencyResult.Error);
         }
 
         var targetResult = Target.Create(targetValue, targetUnit);
         if (targetResult.IsFailure)
         {
-            return Result<HabitAggregate>.BadRequest(targetResult.Error!);
+            return Result<HabitAggregate>.BadRequest(targetResult.Error);
         }
 
         Milestone? milestone = null;
@@ -80,13 +87,13 @@ public sealed class HabitAggregate : Aggregate
             var milestoneResult = Milestone.Create(milestoneTarget.Value, milestoneCurrent.Value);
             if (milestoneResult.IsFailure)
             {
-                return Result<HabitAggregate>.BadRequest(milestoneResult.Error!);
+                return Result<HabitAggregate>.BadRequest(milestoneResult.Error);
             }
 
             milestone = milestoneResult.Value;
         }
 
-        var habitId = Id<HabitAggregate>.NewId();
+        var habitId = id;
 
         return Result<HabitAggregate>.Success(
             new HabitAggregate
@@ -102,6 +109,7 @@ public sealed class HabitAggregate : Aggregate
                 IsArchived = false,
                 EndDate = endDate,
                 Milestone = milestone,
+                LastCompletedAtUtc = lastCompletedAtUtc,
                 Tags = tagIdList
                     .Select(tagId => new HabitTagEntity
                     {
@@ -114,23 +122,6 @@ public sealed class HabitAggregate : Aggregate
             }
         );
     }
-
-    internal static HabitAggregate Restore(HabitEntity entity) =>
-        new()
-        {
-            Id = entity.Id.ToId(),
-            UserId = entity.UserId,
-            Name = entity.Name,
-            Description = entity.Description,
-            Type = entity.Type,
-            Frequency = entity.Frequency,
-            Target = entity.Target,
-            Status = entity.Status,
-            IsArchived = entity.IsArchived,
-            EndDate = entity.EndDate,
-            Milestone = entity.Milestone,
-            LastCompletedAtUtc = entity.LastCompletedAtUtc,
-        };
 
     public HabitEntity ToEntity() =>
         new()

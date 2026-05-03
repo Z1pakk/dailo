@@ -30,6 +30,10 @@ namespace Habit.Infrastructure.Database.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<int?>("AutomationSource")
+                        .HasColumnType("integer")
+                        .HasColumnName("automation_source");
+
                     b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at_utc");
