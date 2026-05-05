@@ -3,6 +3,7 @@ using Identity.Api.Endpoints.Logout;
 using Identity.Api.Endpoints.Refresh;
 using Identity.Api.Endpoints.RegisterUser;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using SharedKernel.Endpoint;
 
@@ -12,7 +13,7 @@ public sealed class AuthGroup : IEndpointGroup
 {
     public void MapGroupEndpoint(IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/auth");
+        var group = app.MapGroup("/auth").WithTags("Identity");
 
         group.MapLoginEndpoint();
         group.MapRegisterEndpoint();

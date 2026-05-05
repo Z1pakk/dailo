@@ -28,6 +28,7 @@
     <Project Path="HabitEntry.Application/HabitEntry.Application.csproj" />
     <Project Path="HabitEntry.Domain/HabitEntry.Domain.csproj" />
     <Project Path="HabitEntry.Infrastructure/HabitEntry.Infrastructure.csproj" />
+    <Project Path="HabitEntry.Integrations/HabitEntry.Integrations.csproj" />
   </Folder>
   <Folder Name="/src/modules/habit/">
     <Project Path="Habit.Api/Habit.Api.csproj" />

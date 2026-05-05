@@ -45,6 +45,7 @@
     <ProjectReference Include="..\Dailo.Infrastructure\Dailo.Infrastructure.csproj" />
     <ProjectReference Include="..\Habit.Api\Habit.Api.csproj" />
     <ProjectReference Include="..\Habit.Infrastructure\Habit.Infrastructure.csproj" />
+    <ProjectReference Include="..\HabitEntry.Infrastructure\HabitEntry.Infrastructure.csproj" />
     <ProjectReference Include="..\Identity.Infrastructure\Identity.Infrastructure.csproj" />
     <ProjectReference Include="..\Tag.Infrastructure\Tag.Infrastructure.csproj" />
   </ItemGroup>

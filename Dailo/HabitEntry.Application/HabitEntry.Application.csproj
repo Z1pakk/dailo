@@ -2,4 +2,8 @@
   <ItemGroup>
     <Folder Include="Features\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HabitEntry.Domain\HabitEntry.Domain.csproj" />
+    <ProjectReference Include="..\SharedKernel\SharedKernel.csproj" />
+  </ItemGroup>
 </Project>
